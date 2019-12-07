@@ -7,7 +7,19 @@ Clone the repository to create a local copy
 
 ### If you want to add/modify/remove some files from the repository run these commands
 
+## Setup and activate a python virtual environment
+`virtualenv -p python3 venv`
+`source venv/bin/activate`
+
+#### Install dependencies
+
+##### If you have both pip and pip3 installed, then use pip3
+`pip3 install -r requirements-dev.txt`
+
 ## Never ever push your changes directly to master. Always create a new branch
+
+
+`source venv/bin/activate`
 
 `git checkout -b *branchname*`
 
