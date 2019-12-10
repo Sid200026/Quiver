@@ -22,6 +22,8 @@ logs/
 !*/migrations/__init__.py
 local_settings.py
 db.sqlite3
+*/media/images/post/*
+*/media/images/profile/*
 
 # IDE Specific
 .vscode
