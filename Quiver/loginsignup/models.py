@@ -18,13 +18,13 @@ class Beaver(models.Model):
     )
     bio = models.TextField(help_text="Enter your profile bio")
     date_of_birth = models.DateField(auto_now=False)
-    profile_photo = models.ImageField(upload_to="images/", help_text='Profile Photo')
+    profile_photo = models.ImageField(upload_to="images/profile/", help_text='Profile Photo')
     phone = PhoneField(help_text='Contact phone number')
 
     class Meta:
         verbose_name_plural = "Beavers"
 
     def __str__(self):
-        return f"Name:{self.user.username}" 
+        return self.user.username
     
 
