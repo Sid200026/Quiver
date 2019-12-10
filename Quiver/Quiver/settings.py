@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'loginsignup',
     'phone_field',
+    'friends',
+    'posts',
 ]
 
 MIDDLEWARE = [
