@@ -18,8 +18,13 @@ class Beaver(models.Model):
     )
     bio = models.TextField(help_text="Enter your profile bio")
     date_of_birth = models.DateField(auto_now=False)
-    profile_photo = models.ImageField(upload_to="images/profile/", help_text='Profile Photo')
+    profile_photo = models.ImageField(
+        upload_to="images/profile/", 
+        help_text='Profile Photo',
+        default="images/default/default_profile_img.jpg",
+    )
     phone = PhoneField(help_text='Contact phone number')
+    friends = models.ManyToManyField("self")
 
     class Meta:
         verbose_name_plural = "Beavers"
@@ -27,4 +32,12 @@ class Beaver(models.Model):
     def __str__(self):
         return self.user.username
     
+    @classmethod
+    def make_friend(cls, creator, friend):
+        friend1 = Beaver.objects.get(user = creator)
+        friend1.friends.add(friend)
 
+    @classmethod
+    def remove_friend(cls, creator, friend):
+        friend1 = Beaver.objects.get(user = creator)
+        friend1.friends.remove(friend)
