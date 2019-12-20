@@ -1,0 +1,61 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+                Quiver
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href={% static 'loginsignup/css/stylesignup.css' %}>
+        <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <div class="navbar">
+                <nav>
+                    <ul>
+                        <li><a href="#termsandcondition">Terms and Conditions</a></li>
+                        <li><a href="#contact us">Contact Us</a></li>
+                        <li><a href={% url 'loginsignup:login'%}>Log In</a></li>
+                        <li><a href={% url 'loginsignup:signup'%}>Sign Up</a></li>
+                        <div class="newfont">
+                                <li class="navQuiver" >QUIVER</li>
+                        </div>
+                      </ul>
+                </nav>
+                
+            </div>
+        </header>
+          
+        <div class="signupform">
+            <img src='{% static 'loginsignup/Quiver.jpg'%}'  class="imagebody">
+            <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
+            <h2 class="title_content"> Sign Up to reach your dear ones</h2>
+            <hr>
+            <br>
+            {% if error%}
+                {% for err in error%}
+                    <h5 class="errorfield">{{err}}</h5>
+                {% endfor %}
+            {% endif%}
+            <form method="POST">
+            {% csrf_token %}
+            <div class="entries">
+            <input type="text" class="input" name="email" placeholder="Email" required>
+            <input type="text" class="input" name="username" placeholder="User Name" required>
+            <input type="text" class="input" name="firstname" placeholder="First Name" required>
+            <input type="text" class="input" name="lastname" placeholder="Last Name" required>
+            <input type="password" class ="input" name="password" placeholder="Enter Password" required>
+            <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" required>
+            <input type="submit" class="signup"></button>
+            <br><br><p class="terms">(By clicking Sign Up, you agree to our <span style="color: blue;">Terms, Data Policy and Cookie Policy</span>. <br>
+                 You may receive SMS notifications from us and can opt out at any time.)</p>
+            <br>
+            <hr>
+            <br>
+            <p>Already have an account? <a class="changelink" href={% url 'loginsignup:login' %}><br>Sign In</a></p>
+            </form>
+        </div>
+        </div>
+    </body>
+</html>
