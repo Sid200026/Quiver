@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 
 from .models import Beaver
 from .forms import BeaverForm
@@ -12,35 +13,37 @@ from .forms import BeaverForm
 class LoginView(View):
     def get(self, request):
         # Return the login page here
-        return HttpResponse("Login");
+        return render(request, 'loginsignup/loginpage_.html')
     def post(self, request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(username = username, password = password)
         if user:
-            login(user)
+            login(user, request)
             # Return the feed page here
             return HttpResponse("Feed");
         else:
             errorMessage = "Wrong username and password combination"
             # Return to the login page and pass the errorMessage
-            return HttpResponse("Login with error");
+            return render(request, 'loginsignup/loginpage_.html', {'error':errorMessage})
 
 class SignUpView(View):
     def get(self, request):
         # Return the signup page
-        return HttpResponse("Sign Up Page")
+        return render(request, 'loginsignup/signup_quiver.html')
     def post(self, request):
         username = request.POST.get("username")
-        if not Beaver.objects.filter(user__username=username).exists():
-            errorMessage = "Username already exists"
-            # Pass the errorMessage to the signup page
+        user = Beaver.objects.filter(user__username=username)
+        if user:
+            errorMessage = ["Username already exists"]
+            return render(request, 'loginsignup/signup_quiver.html', {'error':errorMessage})
         password = request.POST.get("password")
         try:
             validate_password(password)
         except Exception as error:
-            errorMessage = str(error)
+            errorMessage = list(error)
             # Pass this to signup page
+            return render(request, 'loginsignup/signup_quiver.html', {'error':errorMessage})
         # Check for confirm password in the frontend ( Use JS )
         firstname = request.POST.get("firstname")
         lastname = request.POST.get("lastname")
@@ -57,9 +60,11 @@ class SignUpView(View):
             # Redirect to fill_details page
             # Make is_active true only when user fills other details
             login(request,user)
+            return HttpResponse("Feed")
         except Exception as error:
-            errorMessage = str(error)
-            # Pass errorMessage to signup page
+            errorMessage = list(error)
+            return render(request, 'loginsignup/signup_quiver.html', {'error':errorMessage})
+
 
 class CompleteView(LoginRequiredMixin,View):
     login_url="/login/"
