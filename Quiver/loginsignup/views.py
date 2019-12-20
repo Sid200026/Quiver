@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
+from random import randint
+
 from .models import Beaver
 from .forms import BeaverForm
 
@@ -68,7 +70,6 @@ class SignUpView(View):
 
 class CompleteView(LoginRequiredMixin,View):
     login_url="/login/"
-    redirected_field_name="redirect_to"
     def get(self, request):
         if request.user.is_active:
             #redirect to feed page
@@ -90,6 +91,29 @@ class CompleteView(LoginRequiredMixin,View):
                 # Return only the first error message
                 errorMessage = errors.keys()[0]
                 # Call the complete profile page and pass the error page
+
+class ResetPassword(View):
+    def get(self, request):
+        securityKeyDisplay = False
+        # Pass the resetpassword page here along with the above variable
+        pass
+    def post(self, request):
+        # Ask for username ( required )
+        username = request.POST.get("username")
+        user = Beaver.objects.filter(user__username=username)
+        if not user:
+            errorMessage = "No such user exists"
+            # Pass the error message to the render function
+            pass
+        securityCode = randint(100000,999999) # 6 digit security code
+        # Mail this security code to the client
+        # Pass a flag to this page so that the username entry becomes
+        # disabled and enable password create field
+        # If all of them match 
+    
+
+
+
 
 def Landing(request):
     # Return the landing page of Quiver
