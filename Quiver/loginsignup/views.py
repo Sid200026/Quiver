@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
@@ -6,11 +6,15 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+import logging as log
+
 
 from random import randint
 
-from .models import Beaver
+from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm
+
+# TODO : Change Form submissions to redirect on success
 
 class LoginView(View):
     def get(self, request):
@@ -21,7 +25,7 @@ class LoginView(View):
         password = request.POST.get("password")
         user = authenticate(username = username, password = password)
         if user:
-            login(user, request)
+            login(request, user)
             # Return the feed page here
             return HttpResponse("Feed");
         else:
@@ -96,27 +100,59 @@ class ResetPassword(View):
     def get(self, request):
         securityKeyDisplay = False
         # Pass the resetpassword page here along with the above variable
-        pass
+        return render(request, 'loginsignup/reset_password.html', {'securityKey':securityKeyDisplay,  'PasswordKey':False})
     def post(self, request):
-        # Ask for username ( required )
-        username = request.POST.get("username")
-        user = Beaver.objects.filter(user__username=username)
-        if not user:
-            errorMessage = "No such user exists"
-            # Pass the error message to the render function
-            pass
-        securityCode = randint(100000,999999) # 6 digit security code
-        # Mail this security code to the client
-        # Pass a flag to this page so that the username entry becomes
-        # disabled and enable password create field
-        # If all of them match 
-    
-
-
+        validate = request.POST.get("validate")
+        if not validate in 'True':
+            # Ask for username ( required )
+            username = request.POST.get("username")
+            user = Beaver.objects.filter(user__username=username)
+            if not user:
+                securityKeyDisplay = False
+                errorMessage = "No such user exists"
+                # Pass the error message to the render function
+                return render(request, 'loginsignup/reset_password.html', {'securityKey':securityKeyDisplay,  'PasswordKey':False, 'error':errorMessage})
+            securityCode = randint(100000,999999) # 6 digit security code
+            securityKeyDisplay = True
+            beaver = Beaver.objects.get(user__username = username)
+            resetlink, created = ResetPasswordModel.objects.get_or_create(beaver=beaver)
+            resetlink.securityCode = securityCode
+            resetlink.save()
+            log.error(securityCode)
+            return render(request, 'loginsignup/reset_password.html', {'securityKey':securityKeyDisplay, 'PasswordKey':False, 'user':username})
+            # Mail this security code to the client
+            # Pass a flag to this page so that the username entry becomes
+            # disabled and enable password create field
+            # If all of them match 
+        else:
+            username = request.POST.get("user")
+            user = User.objects.get(username=username)
+            passwordKey = request.POST.get("passkey")
+            if not passwordKey in 'True':
+                securityCodeReceived = int(request.POST.get("securityCode"))
+                check = ResetPasswordModel.validateCode(securityCodeReceived, user)
+                if check['status']:
+                    return render(request, 'loginsignup/reset_password.html', {'securityKey':True, 'PasswordKey':True, 'user':username})
+                else:
+                    errorMessage = check['errorMessage']
+                    return render(request, 'loginsignup/reset_password.html', {'securityKey':True, 'PasswordKey':False, 'error':errorMessage, 'user':username})
+            else:
+                password = request.POST.get("password")
+                confirmPassword = request.POST.get("confirm")
+                if password != confirmPassword:
+                    return render(request, 'loginsignup/reset_password.html', {'securityKey':True, 'PasswordKey':True, 'error':"Passwords must match", 'user':username})
+                try:
+                    validate_password(password)
+                except Exception as error:
+                    errorMessage = list(error)[0]
+                    return render(request, 'loginsignup/reset_password.html', {'securityKey':True, 'PasswordKey':True, 'error':errorMessage, 'user':username})
+                user.set_password(password)
+                user.save()
+                return HttpResponseRedirect(reverse('loginsignup:login'))
 
 
 def Landing(request):
-    # Return the landing page of Quiver
+    # Return to the landing page of Quiver
     if request.user.is_authenticated:
         # Redirect to feed page
         pass
