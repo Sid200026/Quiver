@@ -1,9 +1,8 @@
 from django.db import models
-from phone_field import PhoneField
-
-# Create your models here.
 from django.contrib.auth.models import User
-from datetime import timezone
+from django.utils import timezone
+from phone_field import PhoneField
+import datetime
 
 class Beaver(models.Model):
     gender_choice = [
@@ -43,10 +42,10 @@ class Beaver(models.Model):
         friend1 = Beaver.objects.get(user = creator)
         friend1.friends.remove(friend)
 
-class ResetPassword(models.Model):
+class ResetPasswordModel(models.Model):
     beaver = models.OneToOneField(Beaver, on_delete=models.CASCADE)
-    securityCode = models.IntegerField() # Min should be 100000
-    timeCreated = models.DateTimeField(default=timezone.now, editable=False)
+    securityCode = models.IntegerField(null=True, blank = True) # Min should be 100000
+    timeDestroy = models.DateTimeField(default=timezone.now() + datetime.timedelta(seconds=300))
     # Remove this entry if time becomes more than 5 mins
 
     class Meta:
@@ -57,11 +56,18 @@ class ResetPassword(models.Model):
 
     # Before checking if security code is valid or not, use this function
     # TODO : Try to override the method instead of making 2 calls
+    
     @classmethod
-    def validateCode(cls, user):
+    def validateCode(cls, securityCode, user):
         beaver = Beaver.objects.get(user = user)
-        resetHelper = ResetPassword.objects.get(beaver = beaver)
-        securityCreatedTime = resetHelper.timeCreated
+        resetHelper = ResetPasswordModel.objects.get(beaver = beaver)
+        securityDestruction = resetHelper.timeDestroy
+        if not securityDestruction>timezone.now():
         # If time difference is more than 5 mins
-        if True: # TODO : Replace this with time check
             resetHelper.delete()
+            return {'status':False, 'errorMessage':"Time limit exceeded",}
+        else:
+            if securityCode == resetHelper.securityCode:
+                return {'status':True, 'errorMessage':None}
+            else:
+                return {'status':False, 'errorMessage':"Security Code does not match    "}
