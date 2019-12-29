@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from phone_field import PhoneField
+from .managers import BeaverManager
 import datetime
 
 
@@ -11,6 +12,7 @@ class Beaver(models.Model):
         ("F", "Female"),
         ("N", "Cannot Specify"),
     ]
+    objects = BeaverManager()
     user = models.ForeignKey(
         User,
         related_name="users",
@@ -28,7 +30,7 @@ class Beaver(models.Model):
         default="images/default/default_profile_img.jpg",
     )
     phone = PhoneField(help_text='Contact phone number')
-    friends = models.ManyToManyField("self")
+    friends = models.ManyToManyField("self", blank=True)
 
     class Meta:
         verbose_name_plural = "Beavers"
@@ -38,12 +40,12 @@ class Beaver(models.Model):
 
     @classmethod
     def make_friend(cls, creator, friend):
-        friend1 = Beaver.objects.get(user=creator)
+        friend1 = cls.objects.get(user=creator)
         friend1.friends.add(friend)
 
     @classmethod
     def remove_friend(cls, creator, friend):
-        friend1 = Beaver.objects.get(user=creator)
+        friend1 = cls.objects.get(user=creator)
         friend1.friends.remove(friend)
 
 
@@ -81,4 +83,4 @@ class ResetPasswordModel(models.Model):
             else:
                 return {
                     'status': False,
-                    'errorMessage': "Security Code does not match    "}
+                    'errorMessage': "Security Code does not match"}
