@@ -8,3 +8,6 @@
 
 ## 3. ResetPassword.validateCode(user instance)
 `ResetPassword.validateCode(user)`
+
+## Code Styling
+`$ autopep8 --in-place --aggressive --aggressive Quiver -r`

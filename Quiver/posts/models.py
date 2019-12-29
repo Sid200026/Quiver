@@ -2,10 +2,11 @@ from django.db import models
 from loginsignup.models import Beaver
 # Create your models here.
 
+
 class Post(models.Model):
     post_creator = models.ForeignKey(
-        Beaver, 
-        related_name="posts", 
+        Beaver,
+        related_name="posts",
         on_delete=models.CASCADE
     )
     posted_on = models.DateField(auto_now=True)
@@ -22,13 +23,13 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(
-        Post, 
-        related_name="comments", 
+        Post,
+        related_name="comments",
         on_delete=models.CASCADE
     )
     comment_creator = models.ForeignKey(
-        Beaver, 
-        related_name="user_comments", 
+        Beaver,
+        related_name="user_comments",
         on_delete=models.CASCADE
     )
     comment = models.TextField()
@@ -44,12 +45,12 @@ class Comment(models.Model):
 
 class Like(models.Model):
     post = models.ForeignKey(
-        Post, 
-        related_name="post_likes", 
+        Post,
+        related_name="post_likes",
         on_delete=models.CASCADE
     )
     liker = models.ForeignKey(
-        Beaver, 
+        Beaver,
         related_name="total_likes",
         on_delete=models.CASCADE
     )
