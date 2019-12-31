@@ -22,7 +22,9 @@ class Beaver(models.Model):
         choices=gender_choice,
         default="Cannot Specify",
     )
-    bio = models.TextField(help_text="Enter your profile bio", default="Hello everyone")
+    bio = models.TextField(
+        help_text="Enter your profile bio",
+        default="Hello everyone")
     date_of_birth = models.DateField(auto_now=False)
     profile_photo = models.ImageField(
         upload_to="images/profile/",

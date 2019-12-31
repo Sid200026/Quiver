@@ -1,4 +1,5 @@
 {% load static %}
+{% load loginsignup_extras %}
 <html>
     <head>
         <meta charset="UTF-8">
@@ -33,22 +34,30 @@
             <h2 class="title_content"> Sign Up to reach your dear ones</h2>
             <hr>
             <br>
-            {% if error%}
-                {% for err in error%}
-                    <h5 class="errorfield">{{err}}</h5>
-                {% endfor %}
-            {% endif%}
-            <form method="POST">
+            <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
+            <form method="POST" name="signupForm" onsubmit="return validateForm()">
             {% csrf_token %}
             <div class="entries">
-            <input type="text" class="input" name="email" placeholder="Email" required>
-            <input type="text" class="input" name="username" placeholder="User Name" required>
-            <input type="text" class="input" name="firstname" placeholder="First Name" required>
-            <input type="text" class="input" name="lastname" placeholder="Last Name" required>
-            <input type="password" class ="input" name="password" placeholder="Enter Password" minlength=8 required>
-            <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" minlength=8 required>
-            <input type="submit" class="signup"></button>
-            <br><br><p class="terms">(By clicking Sign Up, you agree to our <span style="color: blue;">Terms, Data Policy and Cookie Policy</span>. <br>
+            <h5 class="errorfield">{{ form.email.errors|errorOnly }}</h5>
+            <input type="text" class="input" name="email" placeholder="Email" required value={{form.email.value}}>
+            
+            <h5 class="errorfield">{{ form.username.errors|errorOnly }}</h5>
+            <input type="text" class="input" name="username" placeholder="User Name" required value={{form.cleaned_data.username}}>
+            
+            <h5 class="errorfield">{{ form.first_name.errors|errorOnly  }}</h5>
+            <input type="text" class="input" name="first_name" placeholder="First Name" required value={{form.cleaned_data.first_name}}>
+            
+            <h5 class="errorfield">{{ form.last_name.errors|errorOnly  }}</h5>
+            <input type="text" class="input" name="last_name" placeholder="Last Name" required value={{form.cleaned_data.last_name}}>
+            
+            <h5 class="errorfield">{{ form.password.errors|errorOnly  }}</h5>
+            <input type="password" class ="input" name="password" placeholder="Enter Password" required minlength=8>
+            <h5 class="errorfield confirmpass"></h5>
+            <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" minlength=8>
+            <input type="submit" class="signup"></button></h5>
+            
+            <br><br><p 
+            class="terms">(By clicking Sign Up, you agree to our <span style="color: blue;">Terms, Data Policy and Cookie Policy</span>. <br>
                  You may receive SMS notifications from us and can opt out at any time.)</p>
             <br>
             <hr>
@@ -57,5 +66,6 @@
             </form>
         </div>
         </div>
+        <script src={% static 'loginsignup/JS/signup.js' %}></script>
     </body>
 </html>

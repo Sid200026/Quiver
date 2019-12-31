@@ -14,7 +14,7 @@ from random import randint
 from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm
 from .constants import AuthConstants
-from .auth_forms import UserLoginForm
+from .auth_forms import UserLoginForm, UserSignUpForm
 
 # TODO : Change Form submissions to redirect on success
 
@@ -22,64 +22,38 @@ from .auth_forms import UserLoginForm
 class LoginView(View):
     template_name = 'loginsignup/loginpage_.html'
     form_class = UserLoginForm
+
     def get(self, request):
         return render(request, self.template_name)
 
     def post(self, request):
         userLoginForm = self.form_class(request.POST)
         if userLoginForm.login_user(request):
+            # Use a redirect to the feed page
             return HttpResponse("Feed")
         else:
-            kwargs = {'form' : userLoginForm}
+            kwargs = {'form': userLoginForm}
             return render(request,
                           self.template_name, kwargs)
 
 
 class SignUpView(View):
     template_name = 'loginsignup/signup_quiver.html'
+    form_class = UserSignUpForm
     def get(self, request):
-        # Return the signup page
-        return render(request, 'loginsignup/signup_quiver.html')
+        return render(request, self.template_name)
 
     def post(self, request):
-        username = request.POST.get("username")
-        user = Beaver.objects.filter(user__username=username)
-        if user:
-            errorMessage = ["Username already exists"]
+        userSignUpForm = self.form_class(request.POST)
+        if userSignUpForm.signUpUser(request):
+            # Use a redirect to the other details page  
+            return HttpResponse("Fill Other details Page")
+        else:
+            kwargs = {'form':userSignUpForm}
             return render(request,
-                          'loginsignup/signup_quiver.html',
-                          {'error': errorMessage})
-        password = request.POST.get("password")
-        try:
-            validate_password(password)
-        except Exception as error:
-            errorMessage = list(error)
-            # Pass this to signup page
-            return render(request,
-                          'loginsignup/signup_quiver.html',
-                          {'error': errorMessage})
-        # Check for confirm password in the frontend ( Use JS )
-        firstname = request.POST.get("firstname")
-        lastname = request.POST.get("lastname")
-        email = request.POST.get("email")
-        try:
-            user = User.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                first_name=firstname,
-                last_name=lastname,
-                is_active=False,
+                          self.template_name,
+                          kwargs
             )
-            # Redirect to fill_details page
-            # Make is_active true only when user fills other details
-            login(request, user)
-            return HttpResponse("Feed")
-        except Exception as error:
-            errorMessage = list(error)
-            return render(request,
-                          'loginsignup/signup_quiver.html',
-                          {'error': errorMessage})
 
 
 class CompleteView(LoginRequiredMixin, View):
