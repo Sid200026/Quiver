@@ -61,9 +61,8 @@ class UserSignUpForm(forms.ModelForm):
     def signUpUser(self, request):
         if self.is_valid():
             user = self.save(commit=False)
-            user.is_active=False
+            user.is_active = False
             user.save()
-            login(request,user)
+            login(request, user)
             return True
         return False
-

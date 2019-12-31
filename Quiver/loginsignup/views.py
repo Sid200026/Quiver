@@ -40,20 +40,21 @@ class LoginView(View):
 class SignUpView(View):
     template_name = 'loginsignup/signup_quiver.html'
     form_class = UserSignUpForm
+
     def get(self, request):
         return render(request, self.template_name)
 
     def post(self, request):
         userSignUpForm = self.form_class(request.POST)
         if userSignUpForm.signUpUser(request):
-            # Use a redirect to the other details page  
+            # Use a redirect to the other details page
             return HttpResponse("Fill Other details Page")
         else:
-            kwargs = {'form':userSignUpForm}
+            kwargs = {'form': userSignUpForm}
             return render(request,
                           self.template_name,
                           kwargs
-            )
+                          )
 
 
 class CompleteView(LoginRequiredMixin, View):

@@ -4,6 +4,7 @@ import logging as log
 
 register = template.Library()
 
+
 @register.filter(is_safe=True, name="errorOnly")
 def getErrorOnly(value):
     temp = str(value)
