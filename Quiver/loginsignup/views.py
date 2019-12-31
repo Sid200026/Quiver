@@ -13,32 +13,30 @@ from random import randint
 
 from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm
+from .constants import AuthConstants
+from .auth_forms import UserLoginForm
 
 # TODO : Change Form submissions to redirect on success
 
 
 class LoginView(View):
+    template_name = 'loginsignup/loginpage_.html'
+    form_class = UserLoginForm
     def get(self, request):
-        # Return the login page here
-        return render(request, 'loginsignup/loginpage_.html')
+        return render(request, self.template_name)
 
     def post(self, request):
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(username=username, password=password)
-        if user:
-            login(request, user)
-            # Return the feed page here
+        userLoginForm = self.form_class(request.POST)
+        if userLoginForm.login_user(request):
             return HttpResponse("Feed")
         else:
-            errorMessage = "Wrong username and password combination"
-            # Return to the login page and pass the errorMessage
+            kwargs = {'form' : userLoginForm}
             return render(request,
-                          'loginsignup/loginpage_.html',
-                          {'error': errorMessage})
+                          self.template_name, kwargs)
 
 
 class SignUpView(View):
+    template_name = 'loginsignup/signup_quiver.html'
     def get(self, request):
         # Return the signup page
         return render(request, 'loginsignup/signup_quiver.html')

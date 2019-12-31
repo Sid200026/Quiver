@@ -34,13 +34,13 @@
       <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
       <h2 class="active"> Sign In </h2>
       <br>          
-      {% if error%}
-                  <h5 class="errorfield">{{error}}</h5>
+      {% if form.errors %}
+        <h5 class="errorfield">{{form.errors}}</h5>
       {% endif%}
      <form method="POST">
         {% csrf_token %}
         <div class="entries"></div>
-        <input type="text"  class="input" name="username" placeholder="Username" required>
+        <input type="text" class="input" name="username" placeholder="Username" required>
         <input type="password" class="input" name="password" placeholder="Password" minlength=8 required>
         <br><br>
         <input type="submit" class="signinbutton" value="Log In">
