@@ -1,6 +1,5 @@
 from django import template
 from django.template.defaultfilters import stringfilter
-import logging as log
 
 register = template.Library()
 

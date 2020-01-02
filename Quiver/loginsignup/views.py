@@ -1,22 +1,24 @@
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-import logging as log
-
+from django.views.generic.base import RedirectView
+from django.views.generic.edit import CreateView
+from django.contrib import messages
 
 from random import randint
+import logging as log
 
 from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm
 from .constants import AuthConstants
 from .auth_forms import UserLoginForm, UserSignUpForm
 
-# TODO : Change Form submissions to redirect on success
+User = get_user_model()
 
 
 class LoginView(View):
@@ -30,7 +32,10 @@ class LoginView(View):
         userLoginForm = self.form_class(request.POST)
         if userLoginForm.login_user(request):
             # Use a redirect to the feed page
-            return HttpResponse("Feed")
+            if Beaver.objects.filter(user=request.user).exists():
+                return HttpResponse("Feed")
+            else:
+                return HttpResponse("Complete")
         else:
             kwargs = {'form': userLoginForm}
             return render(request,
@@ -56,67 +61,49 @@ class SignUpView(View):
                           kwargs
                           )
 
-
-class CompleteView(LoginRequiredMixin, View):
-    login_url = "/login/"
-
-    def get(self, request):
-        if request.user.is_active:
-            # redirect to feed page
-            pass
-        beaverForm = BeaverForm()
-        # Pass this form to the complete profile page
-
-    def post(self, request):
-        if request.user.is_active:
-            # redirect to feed page
-            form = BeaverForm(request.POST)
-            if form.is_valid():
-                beaver = BeaverForm.save(commit=False)
-                beaver.user = request.user
-                beaver.user.is_active = True
-                beaver.save()
-                # Redirect to feed page
-            else:
-                errors = form.errors.as_data()
-                # Return only the first error message
-                errorMessage = errors.keys()[0]
-                # Call the complete profile page and pass the error page
+# TODO : Refactor this view
+# TODO : Add celery for async email
 
 
-class ResetPassword(View):
+class ResetPasswordView(View):
+    template_name = "loginsignup/reset_password.html"
+
     def get(self, request):
         securityKeyDisplay = False
         # Pass the resetpassword page here along with the above variable
-        return render(request, 'loginsignup/reset_password.html',
-                      {'securityKey': securityKeyDisplay, 'PasswordKey': False})
+        return render(
+            request, self.template_name, {
+                'securityKey': securityKeyDisplay, 'PasswordKey': False})
 
     def post(self, request):
         validate = request.POST.get("validate")
         if validate not in 'True':
             # Ask for username ( required )
             username = request.POST.get("username")
-            user = Beaver.objects.filter(user__username=username)
-            if not user:
+            user = User.objects.filter(username=username)
+            if not user.exists():
                 securityKeyDisplay = False
-                errorMessage = "No such user exists"
+                errorMessage = AuthConstants.noUser.value
                 # Pass the error message to the render function
                 return render(request,
-                              'loginsignup/reset_password.html',
+                              self.template_name,
                               {'securityKey': securityKeyDisplay,
                                'PasswordKey': False,
                                'error': errorMessage})
-            securityCode = randint(100000, 999999)  # 6 digit security code
-            securityKeyDisplay = True
-            beaver = Beaver.objects.get(user__username=username)
             resetlink, created = ResetPasswordModel.objects.get_or_create(
-                beaver=beaver)
-            resetlink.securityCode = securityCode
+                user=user[0])
+            if created:
+                securityCode = randint(100000, 999999)  # 6 digit security code
+                resetlink.securityCode = securityCode
             resetlink.save()
-            log.error(securityCode)
+            log.error(resetlink.securityCode)
+            messages.info(
+                request,
+                AuthConstants.codeMail.value,
+                fail_silently=True)
             return render(request,
-                          'loginsignup/reset_password.html',
-                          {'securityKey': securityKeyDisplay,
+                          self.template_name,
+                          {'securityKey': True,
                            'PasswordKey': False,
                            'user': username})
             # Mail this security code to the client
@@ -133,52 +120,74 @@ class ResetPassword(View):
                     securityCodeReceived, user)
                 if check['status']:
                     return render(request,
-                                  'loginsignup/reset_password.html',
+                                  self.template_name,
                                   {'securityKey': True,
                                    'PasswordKey': True,
                                    'user': username})
                 else:
-                    errorMessage = check['errorMessage']
+                    errorMessage = check['error']
                     return render(request,
-                                  'loginsignup/reset_password.html',
+                                  self.template_name,
                                   {'securityKey': True,
                                    'PasswordKey': False,
-                                   'error': errorMessage,
+                                   'error': errorMessage.value,
                                    'user': username})
             else:
                 password = request.POST.get("password")
-                confirmPassword = request.POST.get("confirm")
-                if password != confirmPassword:
-                    return render(request,
-                                  'loginsignup/reset_password.html',
-                                  {'securityKey': True,
-                                   'PasswordKey': True,
-                                   'error': "Passwords must match",
-                                   'user': username})
                 try:
                     validate_password(password)
                 except Exception as error:
                     errorMessage = list(error)[0]
                     return render(request,
-                                  'loginsignup/reset_password.html',
+                                  self.template_name,
                                   {'securityKey': True,
                                    'PasswordKey': True,
                                    'error': errorMessage,
                                    'user': username})
                 user.set_password(password)
                 user.save()
+                messages.success(
+                    request,
+                    AuthConstants.passwordUpdated.value,
+                    fail_silently=True)
                 return HttpResponseRedirect(reverse('loginsignup:login'))
 
 
-def Landing(request):
-    # Return to the landing page of Quiver
-    if request.user.is_authenticated:
-        # Redirect to feed page
-        pass
-    pass
+class ResendCodeView(RedirectView):
+    permanent = False
+    pattern_name = "loginsignup:reset"
+
+    def dispatch(self, request, *args, **kwargs):
+        message = AuthConstants.askUsername.value
+        messages.success(request, message, fail_silently=True)
+        return super().dispatch(request, *args, **kwargs)
 
 
-def LogoutUser(request):
-    logout(request)
-    # Return to landing page
-    return HttpResponse("Landing")
+class LogoutView(RedirectView):
+    permanent = False
+    pattern_name = "loginsignup:login"
+
+    def dispatch(self, request, *args, **kwargs):
+        logout(request)
+        message = AuthConstants.sucessLogout.value
+        messages.success(request, message, fail_silently=True)
+        return super().dispatch(request, *args, **kwargs)
+
+
+class CompleteView(LoginRequiredMixin, View):
+    form_class = BeaverForm
+    template_name = "loginsignup/completeprofile.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        beaverForm = self.form_class()
+        if beaverForm.is_valid():
+            beaverForm.save()
+            return HttpResponse("Feed")
+        else:
+            kwargs = {
+                'form': beaverForm,
+            }
+            return render(request, self.template_name, kwargs)

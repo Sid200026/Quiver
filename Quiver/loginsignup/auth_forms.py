@@ -20,13 +20,11 @@ class UserLoginForm(forms.Form):
             return valid
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        user = None
-        try:
-            user = User.objects.get(username=username)
-        except ObjectDoesNotExist:
+        user = User.objects.filter(username=username)
+        if not user.exists():
             self._errors = AuthConstants.noUser.value
             return False
-        if not user.check_password(password):
+        if not user[0].check_password(password):
             self._errors = AuthConstants.noMatch.value
             return False
         return True
@@ -60,9 +58,7 @@ class UserSignUpForm(forms.ModelForm):
 
     def signUpUser(self, request):
         if self.is_valid():
-            user = self.save(commit=False)
-            user.is_active = False
-            user.save()
+            user = self.save()
             login(request, user)
             return True
         return False

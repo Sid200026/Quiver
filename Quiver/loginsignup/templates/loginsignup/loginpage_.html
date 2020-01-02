@@ -14,8 +14,8 @@
                 <nav>
                     <ul>
                     
-                        <li><a href="#termsandcondition">Terms and Conditions</a></li>
-                        <li><a href="#contact us">Contact Us</a></li>
+                        <li><a href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                        <li><a href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
                         <li><a href={% url 'loginsignup:login' %}>Log In</a></li>
                         <li><a href={% url 'loginsignup:signup' %}>Sign Up</a></li>
                         <div class="newfont">
@@ -33,15 +33,20 @@
       <!--<h2 class="Quiver">Quiver</h2><br> -->
       <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
       <h2 class="active"> Sign In </h2>
-      <br>          
+      <br>
+      {% if messages %}
+        {% for message in messages %}
+          <h5 class="errorfield">{{message}}</h5>
+        {% endfor %}
+      {% endif %}
       {% if form.errors %}
         <h5 class="errorfield">{{form.errors}}</h5>
       {% endif%}
      <form method="POST">
         {% csrf_token %}
         <div class="entries"></div>
-        <input type="text" class="input" name="username" placeholder="Username" required>
-        <input type="password" class="input" name="password" placeholder="Password" minlength=8 required>
+        <input type="text" class="input" name="username" placeholder="Username" required value={{form.cleaned_data.username}}>
+        <input type="password" class="input" name="password" placeholder="Password" minlength=8 required value={{form.cleaned_data.password}}>
         <br><br>
         <input type="submit" class="signinbutton" value="Log In">
       </form>

@@ -15,8 +15,8 @@
             <div class="navbar">
                 <nav>
                     <ul>
-                        <li><a href="#termsandcondition">Terms and Conditions</a></li>
-                        <li><a href="#contact us">Contact Us</a></li>
+                        <li><a href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                        <li><a href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
                         <li><a href={% url 'loginsignup:login'%}>Log In</a></li>
                         <li><a href={% url 'loginsignup:signup'%}>Sign Up</a></li>
                         <div class="newfont">
@@ -39,7 +39,7 @@
             {% csrf_token %}
             <div class="entries">
             <h5 class="errorfield">{{ form.email.errors|errorOnly }}</h5>
-            <input type="text" class="input" name="email" placeholder="Email" required value={{form.email.value}}>
+            <input type="text" class="input" name="email" placeholder="Email" required value={{form.cleaned_data.email}}>
             
             <h5 class="errorfield">{{ form.username.errors|errorOnly }}</h5>
             <input type="text" class="input" name="username" placeholder="User Name" required value={{form.cleaned_data.username}}>
