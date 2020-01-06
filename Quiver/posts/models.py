@@ -19,7 +19,7 @@ class Post(models.Model):
         verbose_name_plural = "Posts"
 
     def __str__(self):
-        return f"{self.post_creator}  {self.posted_on}"
+        return f"{self.post_creator} {self.posted_on}"
 
 
 class Comment(models.Model):

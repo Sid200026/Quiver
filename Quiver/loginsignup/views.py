@@ -62,7 +62,6 @@ class SignUpView(View):
                           )
 
 # TODO : Refactor this view
-# TODO : Add celery for async email
 
 
 class ResetPasswordView(View):
