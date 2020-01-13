@@ -35,7 +35,7 @@ class LoginView(View):
             if Beaver.objects.filter(user=request.user).exists():
                 return HttpResponse("Feed")
             else:
-                return HttpResponse("Complete")
+                return HttpResponseRedirect(reverse('loginsignup:complete'))
         else:
             kwargs = {'form': userLoginForm}
             return render(request,
@@ -52,8 +52,7 @@ class SignUpView(View):
     def post(self, request):
         userSignUpForm = self.form_class(request.POST)
         if userSignUpForm.signUpUser(request):
-            # Use a redirect to the other details page
-            return HttpResponse("Fill Other details Page")
+            return HttpResponseRedirect(reverse('loginsignup:complete'))
         else:
             kwargs = {'form': userSignUpForm}
             return render(request,

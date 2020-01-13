@@ -1,0 +1,78 @@
+{% load static %}
+{% load loginsignup_extras %}
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Quiver
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'loginsignup/css/stylesignup.css' %}>
+    <link rel="stylesheet" href={% static 'loginsignup/css/complete.css' %}>
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
+                    <li><a href={% url 'loginsignup:login'%}>Log In</a></li>
+                    <li><a href={% url 'loginsignup:signup'%}>Sign Up</a></li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <div class="signupform">
+        <img src='{% static 'loginsignup/Quiver.jpg'%}' class="imagebody">
+        <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
+        <h2 class="title_content">Complete your Profile</h2>
+        <hr>
+        <br>
+        <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
+        <form method="POST" name="signupForm">
+            {% csrf_token %}
+            <div class="entries">
+                <label for id="profile_photo">Profile Picture</label>
+                <h5 class="errorfield">{{ form.profile_photo.errors|errorOnly }}</h5>
+                <input type="file" accept='image/*' onchange='openFile(event)' class="input" id="profile_photo" name="profile_photo"><br><br>
+
+                <img class="profilepic" id="profileunique"><br><br>
+
+                <label for id="date_of_birth">Date of Birth</label>
+                <h5 class="errorfield">{{form.date_of_birth.errors|errorOnly}}</h5>
+                <input type="date" class="input" id="date_of_birth" name="date_of_birth" placeholder="Date of Birth" required value={{form.cleaned_data.date_of_birth}}>
+
+                <h5 class="errorfield">{{form.gender.errors|errorOnly}}</h5>
+                <label for id="gender">Gender</label><br><br>
+                <select required name="gender" id="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="N">Cannot Specify</option>
+                </select>
+                <br><br>
+                <label for id="phone">Phone Number</label>
+                <h5 class="errorfield">{{ form.phone.errors|errorOnly }}</h5>
+                <input type="number" placeholder="Enter your mobile number" required class="input" id="phone" name="phone" min=1000000000 max=9999999999><br>
+                <br>
+                <label for id="bio">Profile Bio</label>
+                <h5 class="errorfield">{{form.bio.errors|errorOnly}}</h5>
+                <textarea class="input" id="bio" name="bio" placeholder="Enter your profile Bio" value={{form.cleaned_data.bio}}></textarea><br><br>
+                <input type="submit" class="signup" value="Complete Profile"></button></h5>
+        </form>
+    </div>
+    </div>
+    <script src={% static 'loginsignup/JS/complete.js' %}></script>
+</body>
+
+</html>
