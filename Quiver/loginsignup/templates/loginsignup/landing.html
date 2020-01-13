@@ -1,0 +1,49 @@
+{% load static %}
+<html>
+<title>
+    Quiver
+</title>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'loginsignup/css/landing.css' %}>
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
+                    <li><a href={% url 'loginsignup:login' %}>Log In</a></li>
+                    <li><a href={% url 'loginsignup:signup' %}>Sign Up</a></li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+    <div class="container">
+        <div class="temp">
+            <p class="slogan"> Re(Connect+unite+discover)</p>
+            <p class="content">With the correct mindset, <br> you can make anything happen....</p>
+            <p class="content2">Quiver is one of the fastest growing social networks available today!</p>
+            <p class="content3">Join now and create your free profile to start meeting new friends and re-connect to the old ones! </p>
+        </div>
+        <div class="create">
+            <h1 class="quote">“Friends are those rare people who ask how we are and then wait to hear the answer.”</h1>
+            <h1 class="author">– Ed Cunningham</h1>
+        </div>
+    </div>
+    <div class="footer">
+        <p>All Rights Reserved</p>
+    </div>
+</body>
+
+</html>

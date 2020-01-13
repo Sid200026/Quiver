@@ -3,7 +3,7 @@ from .views import LoginView, SignUpView, ResetPasswordView, LogoutView, ResendC
 from django.views.generic import TemplateView
 
 app_name = 'loginsignup'
-landing_page_template = 'loginsignup/signup_quiver.html'
+landing_page_template = 'loginsignup/landing.html'
 
 urlpatterns = [
     path(

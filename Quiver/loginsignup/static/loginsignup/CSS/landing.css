@@ -1,0 +1,129 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+html {
+    background-color: rgb(24, 17, 26);
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-image: url(../friends.jpeg);
+    background-position: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.create {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.temp {
+    flex-grow: 1;
+    margin-left: 50px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(79, 17, 82);
+
+
+}
+
+li {
+    float: right;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 17.5;
+    font-weight: 400;
+}
+
+
+li a:hover {
+    background-color: rgb(107, 16, 107);
+}
+
+/* navigation bar*/
+.navQuiver {
+    float: left;
+    font-size: 33;
+    color: white;
+    font-family: 'Oleo Script', cursive;
+    font-weight: 100;
+    margin-top: 7;
+    margin-left: 10;
+}
+
+.slogan {
+    margin-top: 1%;
+    margin-bottom: 2%;
+    font-size: 50;
+    font-family: 'Rye', cursive;
+    color: rgb(255, 0, 43);
+    font-weight: 100;
+}
+
+.content {
+    font-size: 35;
+    color: rgb(195, 24, 53);
+    font-family: 'Piedra', cursive;
+    font-weight: 100;
+    margin-bottom: 35px;
+}
+
+.content2,
+.content3 {
+    font-size: 25;
+    margin-bottom: 40px;
+    color: rgb(56, 62, 149);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 100;
+}
+
+.quote {
+    font-size: 20px;
+    margin-top: 30px;
+    width: 400px;
+    margin-right: 200px;
+    color: rgb(34, 30, 30);
+    font-weight: 100;
+}
+
+.author {
+    font-size: 25px;
+    margin-left: 150px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 30px;
+    background: rgba(79, 17, 82, 0.322);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: wheat
+}
