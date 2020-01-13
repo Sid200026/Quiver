@@ -1,71 +1,76 @@
 {% load static %}
 {% load loginsignup_extras %}
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>
-                Quiver
-        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href={% static 'loginsignup/css/stylesignup.css' %}>
-        <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-            <div class="navbar">
-                <nav>
-                    <ul>
-                        <li><a href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
-                        <li><a href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
-                        <li><a href={% url 'loginsignup:login'%}>Log In</a></li>
-                        <li><a href={% url 'loginsignup:signup'%}>Sign Up</a></li>
-                        <div class="newfont">
-                                <li class="navQuiver" >QUIVER</li>
-                        </div>
-                      </ul>
-                </nav>
-                
-            </div>
-        </header>
-          
-        <div class="signupform">
-            <img src='{% static 'loginsignup/Quiver.jpg'%}'  class="imagebody">
-            <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
-            <h2 class="title_content"> Sign Up to reach your dear ones</h2>
-            <hr>
-            <br>
-            <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
-            <form method="POST" name="signupForm" onsubmit="return validateForm()">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Quiver
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'loginsignup/css/stylesignup.css' %}>
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
+                    <li><a href={% url 'loginsignup:login'%}>Log In</a></li>
+                    <li><a href={% url 'loginsignup:signup'%}>Sign Up</a></li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <div class="signupform">
+        <img src='{% static 'loginsignup/Quiver.jpg'%}' class="imagebody">
+        <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
+        <h2 class="title_content"> Sign Up to reach your dear ones</h2>
+        <hr>
+        <br>
+        <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
+        <form method="POST" name="signupForm" onsubmit="return validateForm()">
             {% csrf_token %}
             <div class="entries">
-            <h5 class="errorfield">{{ form.email.errors|errorOnly }}</h5>
-            <input type="text" class="input" name="email" placeholder="Email" required value={{form.cleaned_data.email}}>
-            
-            <h5 class="errorfield">{{ form.username.errors|errorOnly }}</h5>
-            <input type="text" class="input" name="username" placeholder="User Name" required value={{form.cleaned_data.username}}>
-            
-            <h5 class="errorfield">{{ form.first_name.errors|errorOnly  }}</h5>
-            <input type="text" class="input" name="first_name" placeholder="First Name" required value={{form.cleaned_data.first_name}}>
-            
-            <h5 class="errorfield">{{ form.last_name.errors|errorOnly  }}</h5>
-            <input type="text" class="input" name="last_name" placeholder="Last Name" required value={{form.cleaned_data.last_name}}>
-            
-            <h5 class="errorfield">{{ form.password.errors|errorOnly  }}</h5>
-            <input type="password" class ="input" name="password" placeholder="Enter Password" required minlength=8>
-            <h5 class="errorfield confirmpass"></h5>
-            <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" minlength=8>
-            <input type="submit" class="signup"></button></h5>
-            
-            <br><br><p 
-            class="terms">(By clicking Sign Up, you agree to our <span style="color: blue;">Terms, Data Policy and Cookie Policy</span>. <br>
-                 You may receive SMS notifications from us and can opt out at any time.)</p>
-            <br>
-            <hr>
-            <br>
-            <p>Already have an account? <a class="changelink" href={% url 'loginsignup:login' %}><br>Sign In</a></p>
-            </form>
-        </div>
-        </div>
-        <script src={% static 'loginsignup/JS/signup.js' %}></script>
-    </body>
+                <h5 class="errorfield">{{ form.email.errors|errorOnly }}</h5>
+                <input type="text" class="input" name="email" placeholder="Email" required value={{form.cleaned_data.email}}>
+
+                <h5 class="errorfield">{{ form.username.errors|errorOnly }}</h5>
+                <input type="text" class="input" name="username" placeholder="User Name" required value={{form.cleaned_data.username}}>
+
+                <h5 class="errorfield">{{ form.first_name.errors|errorOnly  }}</h5>
+                <input type="text" class="input" name="first_name" placeholder="First Name" required value={{form.cleaned_data.first_name}}>
+
+                <h5 class="errorfield">{{ form.last_name.errors|errorOnly  }}</h5>
+                <input type="text" class="input" name="last_name" placeholder="Last Name" required value={{form.cleaned_data.last_name}}>
+
+                <h5 class="errorfield">{{ form.password.errors|errorOnly  }}</h5>
+                <input type="password" class="input" name="password" placeholder="Enter Password" required minlength=8>
+                <h5 class="errorfield confirmpass"></h5>
+                <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" minlength=8>
+                <input type="submit" class="signup"></button></h5>
+
+                <br><br>
+                <p class="terms">(By clicking Sign Up, you agree to our <span style="color: blue;">Terms, Data Policy and Cookie Policy</span>. <br>
+                    You may receive SMS notifications from us and can opt out at any time.)</p>
+                <br>
+                <hr>
+                <br>
+                <p>Already have an account? <a class="changelink" href={% url 'loginsignup:login' %}><br>Sign In</a></p>
+        </form>
+    </div>
+    </div>
+    <script src={% static 'loginsignup/JS/signup.js' %}></script>
+</body>
+
 </html>

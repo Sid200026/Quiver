@@ -1,67 +1,72 @@
 {% load static %}
 <html>
-    <title>
-        Quiver
-    </title>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href={% static 'loginsignup/css/loginpagestyle.css' %}>
-        <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
-    </head>
-      <body>
-        <header>
-            <div class="navbar">
-                <nav>
-                    <ul>
-                    
-                        <li><a href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
-                        <li><a href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
-                        <li><a href={% url 'loginsignup:login' %}>Log In</a></li>
-                        <li><a href={% url 'loginsignup:signup' %}>Sign Up</a></li>
-                        <div class="newfont">
-                                <li class="navQuiver" >QUIVER</li>
-                                </div>
-                      </ul>
-                </nav>
-                
-            </div>
-        </header>
-<div class="signin">
-    <img src='{% static 'loginsignup/Quiver.jpg'%}'  height="100" width="200">
-      <br>
+<title>
+    Quiver
+</title>
 
-      <!--<h2 class="Quiver">Quiver</h2><br> -->
-      <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
-      <h2 class="active"> Sign In </h2>
-      <br>
-      {% if messages %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'loginsignup/css/loginpagestyle.css' %}>
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
+                    <li><a target="_blank" href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
+                    <li><a href={% url 'loginsignup:login' %}>Log In</a></li>
+                    <li><a href={% url 'loginsignup:signup' %}>Sign Up</a></li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+    <div class="signin">
+        <img src='{% static 'loginsignup/Quiver.jpg'%}' height="100" width="200">
+        <br>
+
+        <!--<h2 class="Quiver">Quiver</h2><br> -->
+        <h2 class="title_content2">Re(Connect+Unite+Discover)</h2>
+        <h2 class="active"> Sign In </h2>
+        <br>
+        {% if messages %}
         {% for message in messages %}
-          <h5 class="errorfield">{{message}}</h5>
+        <h5 class="errorfield">{{message}}</h5>
         {% endfor %}
-      {% endif %}
-      {% if form.errors %}
+        {% endif %}
+        {% if form.errors %}
         <h5 class="errorfield">{{form.errors}}</h5>
-      {% endif%}
-     <form method="POST">
-        {% csrf_token %}
-        <div class="entries"></div>
-        <input type="text" class="input" name="username" placeholder="Username" required value={{form.cleaned_data.username}}>
-        <input type="password" class="input" name="password" placeholder="Password" minlength=8 required value={{form.cleaned_data.password}}>
-        <br><br>
-        <input type="submit" class="signinbutton" value="Log In">
-      </form>
-      
-  
-      <div id="formFooter">
-        <a href={% url 'loginsignup:reset' %}>Forgot Password?</a>
-      </div>
-      <hr>
-      <br>
-      
-      <h4> Don't have an account? We can fix that! </h4>
-      <a class="create" href={% url 'loginsignup:signup' %}>Create an Account</a>
-  
+        {% endif%}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="entries"></div>
+            <input type="text" class="input" name="username" placeholder="Username" required value={{form.cleaned_data.username}}>
+            <input type="password" class="input" name="password" placeholder="Password" minlength=8 required value={{form.cleaned_data.password}}>
+            <br><br>
+            <input type="submit" class="signinbutton" value="Log In">
+        </form>
+
+
+        <div id="formFooter">
+            <a href={% url 'loginsignup:reset' %}>Forgot Password?</a>
+        </div>
+        <hr>
+        <br>
+
+        <h4> Don't have an account? We can fix that! </h4>
+        <a class="create" href={% url 'loginsignup:signup' %}>Create an Account</a>
+
     </div>
-  </div>
-  </body>
-  </html>
+    </div>
+</body>
+
+</html>

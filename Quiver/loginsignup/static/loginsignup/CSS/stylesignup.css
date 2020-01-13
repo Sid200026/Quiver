@@ -1,138 +1,137 @@
-*{
-  margin:0px;
-  padding:0px;
+* {
+  margin: 0px;
+  padding: 0px;
   box-sizing: border-box;
 }
-html
-{
-    background-color:rgb(24, 17, 26) ;
+
+html {
+  background-color: rgb(24, 17, 26);
+}
+
+.body {
+  margin: 0;
+  padding: 0;
+}
+
+.signupform {
+  width: 30%;
+  background-color: rgb(255, 255, 255);
+  padding: 25px;
+  margin: 8% auto;
+  text-align: center;
+  box-shadow: 9px 12px 29px 6px rgba(109, 38, 107, 0.83);
+  margin-top: 2%;
+  text-decoration: none;
+}
+
+.title {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 40;
+  color: rgb(131, 12, 85);
+  margin: 0;
 
 }
-.body
-{
-    margin: 0;
-    padding: 0;
-  
-    
-}
-.signupform
-{
-    width: 30%;
-    background-color: rgb(255, 255, 255);
-    padding: 25px;
-    margin: 8% auto;
-    text-align: center;
-    box-shadow: 9px 12px 29px 6px rgba(109,38,107,0.83);
-    margin-top:2%;
-    text-decoration: none;
-}
-.title
-{
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size:40;
-    color: rgb(131, 12, 85);
-    margin:0;
 
+.title_content {
+  text-transform: capitalize;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20;
+  margin-bottom: 5;
+  margin-top: 10;
+  color: #214922;
 }
-.title_content
-{
-    text-transform:capitalize;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20;
-    margin-bottom:5;
-    margin-top: 10;
-    color: #214922;
-}
-.imagebody
-{
+
+.imagebody {
   height: 100;
-  width:200;
+  width: 200;
 }
-.title_content2
-{
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 15;
-}
-.input
-{
-    border-radius: 5px;
-    padding:10px;
-    margin: 5px;
-    width:75%;
-    border:  1px solid rgb(200, 186, 196);
-    outline: none;
-    margin-bottom: 5;
-}
-.input2
 
-{
+.title_content2 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 15;
+}
+
+.input {
   border-radius: 5px;
-    padding:10px;
-    margin: 5px;
-    width:75%;
-    border:  1px solid rgb(200, 186, 196);
-    outline: none;
-    margin-bottom:30;
+  padding: 10px;
+  margin: 5px;
+  width: 75%;
+  border: 1px solid rgb(200, 186, 196);
+  outline: none;
+  margin-bottom: 5;
+}
+
+.input2 {
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  width: 75%;
+  border: 1px solid rgb(200, 186, 196);
+  outline: none;
+  margin-bottom: 30;
 
 }
-.signup
-{
-    padding: 5px;
-    color:white;
-    border-radius: 5px;
-    width:60%;
-    padding:10px;
-    background-color: rgb(65, 24, 56);
-    box-shadow: 9px 12px 27px -6px rgba(109,55,91,0.83);
-    margin-bottom: 6;
+
+.signup {
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  width: 60%;
+  padding: 10px;
+  background-color: rgb(65, 24, 56);
+  box-shadow: 9px 12px 27px -6px rgba(109, 55, 91, 0.83);
+  margin-bottom: 6;
 }
-.terms
-{
-    font-size:11.5;
-    font-family: 'Times New Roman', Times, serif;
+
+.terms {
+  font-size: 11.5;
+  font-family: 'Times New Roman', Times, serif;
 }
+
 ul {
-    list-style-type: none;
-    margin:0;
-    padding: 0;
-    overflow: hidden;
-    background-color: rgb(79, 17, 82);
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(79, 17, 82);
 
-  }
-  
-  li {
-    float: right;
-  }
-  
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 20px 20px;
-    font-size:17.5;
-    font-weight: 400;
-    text-decoration: none;
-  }
-  li a:hover 
-  {
-    background-color: rgb(107, 16, 107);
-  }
-.navQuiver
-{
-  float:left;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 20px 20px;
+  font-size: 17.5;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: rgb(107, 16, 107);
+}
+
+.navQuiver {
+  float: left;
   font-size: 33;
   color: white;
-  font-family:'Oleo Script', cursive;
+  font-family: 'Oleo Script', cursive;
   font-weight: 100;
   margin-top: 7;
   margin-left: 10;
-  
+
 }
-.changelink{
+
+.changelink {
   text-decoration: none;
 }
-.errorfield{
-  margin-bottom:10px;
-  font-size: 17 ;
+
+.errorfield {
+  margin-bottom: 10px;
+  font-size: 17;
   color: rgb(174, 75, 75);
 }
