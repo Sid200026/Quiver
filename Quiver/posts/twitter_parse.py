@@ -17,7 +17,7 @@ def getTrending():
     all_hashtag = []
     hashtags = firstcard.find_all("a")
     for hashtag in hashtags:
-        all_hashtag.insert(hashtag)
+        all_hashtag.append(hashtag)
     return {
         'hashtagArray': all_hashtag,
         'error': None
