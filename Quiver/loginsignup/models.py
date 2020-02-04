@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from phone_field import PhoneField
 
 
 from .managers import BeaverManager
@@ -19,7 +18,7 @@ class Beaver(models.Model):
         ("N", "Cannot Specify"),
     ]
     objects = BeaverManager()
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User,
         related_name="users",
         on_delete=models.CASCADE)
@@ -30,14 +29,15 @@ class Beaver(models.Model):
     )
     bio = models.TextField(
         help_text="Enter your profile bio",
-        default="Hello everyone")
+        default="Hello everyone",
+        blank=True)
     date_of_birth = models.DateField(auto_now=False)
     profile_photo = models.ImageField(
         upload_to="images/profile/",
         help_text='Profile Photo',
         default=ImageConstant.defaultImage.value,
     )
-    phone = PhoneField(help_text='Contact phone number')
+    phone = models.BigIntegerField()
     friends = models.ManyToManyField("self", blank=True)
 
     class Meta:
@@ -61,11 +61,8 @@ class ResetPasswordModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     securityCode = models.IntegerField(
         null=True, blank=True)  # Min should be 100000
-    timeDestroy = models.DateTimeField(
-        editable=False,
-        default=timezone.now() +
-        datetime.timedelta(
-            seconds=300))
+    timeCreated = models.DateTimeField(
+        auto_now_add=True)
     # Remove this entry if time becomes more than 5 mins
 
     class Meta:
@@ -80,9 +77,11 @@ class ResetPasswordModel(models.Model):
     @classmethod
     def validateCode(cls, securityCode, user):
         resetPasswordInstance, created = cls.objects.get_or_create(user=user)
-        getTimeToDestroy = resetPasswordInstance.timeDestroy
+        getCreated = resetPasswordInstance.timeCreated
+        minuteDiff = (timezone.now() - getCreated) / \
+            timezone.timedelta(minutes=1)
         # Time limit has been exceeded then delete
-        if(timezone.now() > getTimeToDestroy):
+        if(minuteDiff > 5):
             resetPasswordInstance.delete()
             return {
                 'status': False,

@@ -40,7 +40,7 @@
         <hr>
         <br>
         <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
-        <form method="POST" name="signupForm">
+        <form method="POST" name="signupForm" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="entries">
                 <label for id="profile_photo">Profile Picture</label>
@@ -63,7 +63,7 @@
                 <br><br>
                 <label for id="phone">Phone Number</label>
                 <h5 class="errorfield">{{ form.phone.errors|errorOnly }}</h5>
-                <input type="number" placeholder="Enter your mobile number" required class="input" id="phone" name="phone" min=1000000000 max=9999999999><br>
+                <input type="number" placeholder="Enter your mobile number" required class="input" id="phone" name="phone" min=1000000000 max=9999999999 value={{form.cleaned_data.phone}}><br>
                 <br>
                 <label for id="bio">Profile Bio</label>
                 <h5 class="errorfield">{{form.bio.errors|errorOnly}}</h5>

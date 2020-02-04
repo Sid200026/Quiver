@@ -162,7 +162,7 @@ class ResendCodeView(RedirectView):
 
 
 class LogoutView(RedirectView):
-    permanent = False
+    permanent = True
     pattern_name = "loginsignup:login"
 
     def dispatch(self, request, *args, **kwargs):
@@ -180,9 +180,8 @@ class CompleteView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
     def post(self, request):
-        beaverForm = self.form_class()
-        if beaverForm.is_valid():
-            beaverForm.save()
+        beaverForm = self.form_class(request.POST, request.FILES)
+        if beaverForm.checkProfile(request):
             return HttpResponse("Feed")
         else:
             kwargs = {

@@ -50,7 +50,7 @@
             {% csrf_token %}
             <div class="entries"></div>
             <input type="text" class="input" name="username" placeholder="Username" required value={{form.cleaned_data.username}}>
-            <input type="password" class="input" name="password" placeholder="Password" minlength=8 required value={{form.cleaned_data.password}}>
+            <input type="password" autocomplete="new-password" class="input" name="password" placeholder="Password" minlength=8 required value={{form.cleaned_data.password}}>
             <br><br>
             <input type="submit" class="signinbutton" value="Log In">
         </form>

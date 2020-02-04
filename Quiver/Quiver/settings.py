@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'loginsignup',
     'phone_field',
     'posts',
+    'chat',
 ]
 
 MIDDLEWARE = [

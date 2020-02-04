@@ -55,7 +55,7 @@
                 <input type="text" class="input" name="last_name" placeholder="Last Name" required value={{form.cleaned_data.last_name}}>
 
                 <h5 class="errorfield">{{ form.password.errors|errorOnly  }}</h5>
-                <input type="password" class="input" name="password" placeholder="Enter Password" required minlength=8>
+                <input type="password" class="input" name="password" autocomplete="new-password" placeholder="Enter Password" required minlength=8>
                 <h5 class="errorfield confirmpass"></h5>
                 <input type="password" class="input2" name="confirmpassword" placeholder=" Confirm Password" minlength=8>
                 <input type="submit" class="signup"></button></h5>
