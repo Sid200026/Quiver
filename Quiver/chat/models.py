@@ -1,25 +1,21 @@
 from django.db import models
 import uuid
-from loginsignup.models import Beaver
 from .constants import MessageConstants
-from simplecrypt import encrypt, decrypt
-from django.utils.crypto import get_random_string
 import string
+import base64
+from cryptography.fernet import Fernet
 
-generatePublicKey = get_random_string(
-    length=16,
-    allowed_chars=string.ascii_uppercase +
-    string.digits)
+generatePublicKey = Fernet.generate_key().decode("utf8")
 
 
 class ChatInfo(models.Model):
     member1 = models.ForeignKey(
-        Beaver,
+        'loginsignup.Beaver',
         on_delete=models.CASCADE,
         related_name="memberOne",
         related_query_name="memOne")
     member2 = models.ForeignKey(
-        Beaver,
+        'loginsignup.Beaver',
         on_delete=models.CASCADE,
         related_name="memberTwo",
         related_query_name="memTwo")
@@ -30,7 +26,7 @@ class ChatInfo(models.Model):
         editable=False)
     publicKey = models.CharField(
         "Encryption key",
-        max_length=16,
+        max_length=32,
         default=generatePublicKey,
         editable=False)
 
@@ -38,7 +34,7 @@ class ChatInfo(models.Model):
         verbose_name_plural = "Chat Informations"
 
     def __str__(self):
-        return f"{self.sender} -> {self.receiver}"
+        return f"{self.member1} <-> {self.member2}"
 
     # When someone creates a new friend call this method
     @classmethod
@@ -52,21 +48,29 @@ class ChatInfo(models.Model):
         return cls.objects.select_related('member1').filter(
             member1=beaver) | cls.objects.select_related('member2').filter(
             member2=beaver)
+    
+    @classmethod
+    def convertUUIDToString(cls, uniqueid):
+        return str(uniqueid)
+    
+    @classmethod
+    def convertStringToUUID(cls, string):
+        return uuid.UUID(string)
 
 
 class ChatMessage(models.Model):
-    chatinfo = models.OneToOneField(
+    chatinfo = models.ForeignKey(
         ChatInfo,
         on_delete=models.CASCADE,
         related_name="messages",
         related_query_name="message")
     sender = models.ForeignKey(
-        Beaver,
+        'loginsignup.Beaver',
         on_delete=models.CASCADE,
         related_name="messages_sent",
         related_query_name="message_sent")
     message = models.TextField(null=False)
-    timeSent = models.DateTimeField(auto_now_add=True)
+    timeSent = models.DateTimeField(auto_now_add=True)  
 
     class Meta:
         verbose_name_plural = "Chat Messages"
@@ -84,12 +88,15 @@ class ChatMessage(models.Model):
                 'status': False,
                 'error': MessageConstants.notAFriend,
             }
-        publicKey = chat_info.publicKey
-        return decrypt(publicKey, message).decode("utf8")
+        publicKey = chat_info.publicKey.encode("utf8")
+        fernet = Fernet(publicKey)
+        # Convert the message into byte string and then into string
+        return fernet.decrypt(message.encode("utf8")).decode("utf8")
 
     # Sender must be a beaver instance
 
-    def createMessage(self, urlparam, sender, message):
+    @classmethod
+    def createMessage(cls, urlparam, sender, message):
         chat_info = None
         try:
             chat_info = ChatInfo.objects.get(urlparam=urlparam)
@@ -98,10 +105,16 @@ class ChatMessage(models.Model):
                 'status': False,
                 'error': MessageConstants.notAFriend
             }
-        publicKey = self.chatinfo.publicKey
-        encryptedMessage = encrypt(publicKey, message)
-        ChatInfo.object.create(
+        publicKey = chat_info.publicKey.encode("utf8")
+        fernet = Fernet(publicKey)
+        # Convert the message into byte and then convert the encrypted byte string into string
+        encryptedMessage = fernet.encrypt(message.encode("utf8")).decode("utf8")
+        cls.objects.create(
             chatinfo=chat_info,
             sender=sender,
             message=encryptedMessage,
         )
+        return {
+            'status': True,
+            'error': None
+        }

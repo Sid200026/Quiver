@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
+from chat.models import ChatInfo
 
 from .managers import BeaverManager
 from .constants import ImageConstant, ResetConstants
@@ -48,8 +48,8 @@ class Beaver(models.Model):
 
     @classmethod
     def make_friend(cls, creator, friend):
-        friend1 = cls.objects.get(user=creator)
-        friend1.friends.add(friend)
+        creator.friends.add(friend)
+        ChatInfo.createChatInformation(creator, friend)
 
     @classmethod
     def remove_friend(cls, creator, friend):
