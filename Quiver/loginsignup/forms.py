@@ -5,7 +5,7 @@ from .models import Beaver
 class BeaverForm(ModelForm):
     class Meta:
         model = Beaver
-        exclude = ['user', 'friends']
+        exclude = ["user", "friends"]
 
     def checkProfile(self, request):
         if self.is_valid():

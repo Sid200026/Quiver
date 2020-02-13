@@ -1,8 +1,6 @@
 from django.db import models
 import uuid
 from .constants import MessageConstants
-import string
-import base64
 from .managers import ChatMessageManager
 from cryptography.fernet import Fernet
 
@@ -11,25 +9,23 @@ generatePublicKey = Fernet.generate_key().decode("utf8")
 
 class ChatInfo(models.Model):
     member1 = models.ForeignKey(
-        'loginsignup.Beaver',
+        "loginsignup.Beaver",
         on_delete=models.CASCADE,
         related_name="memberOne",
-        related_query_name="memOne")
+        related_query_name="memOne",
+    )
     member2 = models.ForeignKey(
-        'loginsignup.Beaver',
+        "loginsignup.Beaver",
         on_delete=models.CASCADE,
         related_name="memberTwo",
-        related_query_name="memTwo")
+        related_query_name="memTwo",
+    )
     urlparam = models.UUIDField(
-        "URL Parameter",
-        primary_key=True,
-        default=uuid.uuid4(),
-        editable=False)
+        "URL Parameter", primary_key=True, default=uuid.uuid4(), editable=False
+    )
     publicKey = models.CharField(
-        "Encryption key",
-        max_length=32,
-        default=generatePublicKey,
-        editable=False)
+        "Encryption key", max_length=32, default=generatePublicKey, editable=False
+    )
 
     class Meta:
         verbose_name_plural = "Chat Informations"
@@ -46,9 +42,9 @@ class ChatInfo(models.Model):
     # queryset
     @classmethod
     def getAllURLParams(cls, beaver):
-        return cls.objects.select_related('member1').filter(
-            member1=beaver) | cls.objects.select_related('member2').filter(
-            member2=beaver)
+        return cls.objects.select_related("member1").filter(
+            member1=beaver
+        ) | cls.objects.select_related("member2").filter(member2=beaver)
 
     @classmethod
     def convertUUIDToString(cls, uniqueid):
@@ -63,9 +59,10 @@ class ChatInfo(models.Model):
         response = []
         for messageDetail in getMessages:
             messageInfo = {}
-            messageInfo['message'] = ChatMessage.decryptMessage(
-                messageDetail.message, urlparam=messageDetail.chatinfo.urlparam)
-            messageInfo['sender'] = messageDetail.sender.user.username
+            messageInfo["message"] = ChatMessage.decryptMessage(
+                messageDetail.message, urlparam=messageDetail.chatinfo.urlparam
+            )
+            messageInfo["sender"] = messageDetail.sender.user.username
             response.append(messageInfo)
         return response
 
@@ -76,12 +73,14 @@ class ChatMessage(models.Model):
         ChatInfo,
         on_delete=models.CASCADE,
         related_name="messages",
-        related_query_name="message")
+        related_query_name="message",
+    )
     sender = models.ForeignKey(
-        'loginsignup.Beaver',
+        "loginsignup.Beaver",
         on_delete=models.CASCADE,
         related_name="messages_sent",
-        related_query_name="message_sent")
+        related_query_name="message_sent",
+    )
     message = models.TextField(null=False)
     timeSent = models.DateTimeField(auto_now_add=True)
 
@@ -97,10 +96,7 @@ class ChatMessage(models.Model):
         try:
             chat_info = ChatInfo.objects.get(urlparam=urlparam)
         except BaseException:
-            return {
-                'status': False,
-                'error': MessageConstants.notAFriend,
-            }
+            return {"status": False, "error": MessageConstants.notAFriend}
         publicKey = chat_info.publicKey.encode("utf8")
         fernet = Fernet(publicKey)
         # Convert the message into byte string and then into string
@@ -114,22 +110,11 @@ class ChatMessage(models.Model):
         try:
             chat_info = ChatInfo.objects.get(urlparam=urlparam)
         except BaseException:
-            return {
-                'status': False,
-                'error': MessageConstants.notAFriend
-            }
+            return {"status": False, "error": MessageConstants.notAFriend}
         publicKey = chat_info.publicKey.encode("utf8")
         fernet = Fernet(publicKey)
         # Convert the message into byte and then convert the encrypted byte
         # string into string
-        encryptedMessage = fernet.encrypt(
-            message.encode("utf8")).decode("utf8")
-        cls.objects.create(
-            chatinfo=chat_info,
-            sender=sender,
-            message=encryptedMessage,
-        )
-        return {
-            'status': True,
-            'error': None
-        }
+        encryptedMessage = fernet.encrypt(message.encode("utf8")).decode("utf8")
+        cls.objects.create(chatinfo=chat_info, sender=sender, message=encryptedMessage)
+        return {"status": True, "error": None}

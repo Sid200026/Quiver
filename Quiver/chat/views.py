@@ -8,6 +8,4 @@ class ChatListView(LoginRequiredMixin, TemplateView):
 
 
 def room(request, urlparam):
-    return render(request, 'chat/room.html', {
-        'room_name': urlparam
-    })
+    return render(request, "chat/room.html", {"room_name": urlparam})

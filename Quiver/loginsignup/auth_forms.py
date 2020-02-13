@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.hashers import check_password  # noqa, flake8 issue
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import validate_password
 
@@ -18,8 +17,8 @@ class UserLoginForm(forms.Form):
         valid = super().is_valid()
         if not valid:
             return valid
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
+        username = self.cleaned_data.get("username")
+        password = self.cleaned_data.get("password")
         user = User.objects.filter(username=username)
         if not user.exists():
             self._errors = AuthConstants.noUser.value
@@ -31,8 +30,8 @@ class UserLoginForm(forms.Form):
 
     def login_user(self, request):
         if self.is_valid():
-            username = self.cleaned_data.get('username')
-            password = self.cleaned_data.get('password')
+            username = self.cleaned_data.get("username")
+            password = self.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             login(request, user)
             return True
@@ -42,7 +41,7 @@ class UserLoginForm(forms.Form):
 class UserSignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+        fields = ["username", "password", "email", "first_name", "last_name"]
 
     def is_valid(self):
         valid = super().is_valid()

@@ -7,3 +7,5 @@ requests===2.22.0
 lxml===4.4.2
 cryptography==2.8
 channels==2.4.0
+black==19.10b0
+flake8==3.7.9

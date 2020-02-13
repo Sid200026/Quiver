@@ -1,13 +1,11 @@
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import logout
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
 from django.views.generic.base import RedirectView
-from django.views.generic.edit import CreateView
 from django.contrib import messages
 
 from random import randint
@@ -22,7 +20,7 @@ User = get_user_model()
 
 
 class LoginView(View):
-    template_name = 'loginsignup/loginpage_.html'
+    template_name = "loginsignup/loginpage_.html"
     form_class = UserLoginForm
 
     def get(self, request):
@@ -35,15 +33,14 @@ class LoginView(View):
             if Beaver.objects.filter(user=request.user).exists():
                 return HttpResponse("Feed")
             else:
-                return HttpResponseRedirect(reverse('loginsignup:complete'))
+                return HttpResponseRedirect(reverse("loginsignup:complete"))
         else:
-            kwargs = {'form': userLoginForm}
-            return render(request,
-                          self.template_name, kwargs)
+            kwargs = {"form": userLoginForm}
+            return render(request, self.template_name, kwargs)
 
 
 class SignUpView(View):
-    template_name = 'loginsignup/signup_quiver.html'
+    template_name = "loginsignup/signup_quiver.html"
     form_class = UserSignUpForm
 
     def get(self, request):
@@ -52,13 +49,11 @@ class SignUpView(View):
     def post(self, request):
         userSignUpForm = self.form_class(request.POST)
         if userSignUpForm.signUpUser(request):
-            return HttpResponseRedirect(reverse('loginsignup:complete'))
+            return HttpResponseRedirect(reverse("loginsignup:complete"))
         else:
-            kwargs = {'form': userSignUpForm}
-            return render(request,
-                          self.template_name,
-                          kwargs
-                          )
+            kwargs = {"form": userSignUpForm}
+            return render(request, self.template_name, kwargs)
+
 
 # TODO : Refactor this view
 
@@ -70,12 +65,14 @@ class ResetPasswordView(View):
         securityKeyDisplay = False
         # Pass the resetpassword page here along with the above variable
         return render(
-            request, self.template_name, {
-                'securityKey': securityKeyDisplay, 'PasswordKey': False})
+            request,
+            self.template_name,
+            {"securityKey": securityKeyDisplay, "PasswordKey": False},
+        )
 
     def post(self, request):
         validate = request.POST.get("validate")
-        if validate not in 'True':
+        if validate not in "True":
             # Ask for username ( required )
             username = request.POST.get("username")
             user = User.objects.filter(username=username)
@@ -83,27 +80,27 @@ class ResetPasswordView(View):
                 securityKeyDisplay = False
                 errorMessage = AuthConstants.noUser.value
                 # Pass the error message to the render function
-                return render(request,
-                              self.template_name,
-                              {'securityKey': securityKeyDisplay,
-                               'PasswordKey': False,
-                               'error': errorMessage})
-            resetlink, created = ResetPasswordModel.objects.get_or_create(
-                user=user[0])
+                return render(
+                    request,
+                    self.template_name,
+                    {
+                        "securityKey": securityKeyDisplay,
+                        "PasswordKey": False,
+                        "error": errorMessage,
+                    },
+                )
+            resetlink, created = ResetPasswordModel.objects.get_or_create(user=user[0])
             if created:
                 securityCode = randint(100000, 999999)  # 6 digit security code
                 resetlink.securityCode = securityCode
             resetlink.save()
             log.error(resetlink.securityCode)
-            messages.info(
+            messages.info(request, AuthConstants.codeMail.value, fail_silently=True)
+            return render(
                 request,
-                AuthConstants.codeMail.value,
-                fail_silently=True)
-            return render(request,
-                          self.template_name,
-                          {'securityKey': True,
-                           'PasswordKey': False,
-                           'user': username})
+                self.template_name,
+                {"securityKey": True, "PasswordKey": False, "user": username},
+            )
             # Mail this security code to the client
             # Pass a flag to this page so that the username entry becomes
             # disabled and enable password create field
@@ -112,43 +109,49 @@ class ResetPasswordView(View):
             username = request.POST.get("user")
             user = User.objects.get(username=username)
             passwordKey = request.POST.get("passkey")
-            if passwordKey not in 'True':
+            if passwordKey not in "True":
                 securityCodeReceived = int(request.POST.get("securityCode"))
-                check = ResetPasswordModel.validateCode(
-                    securityCodeReceived, user)
-                if check['status']:
-                    return render(request,
-                                  self.template_name,
-                                  {'securityKey': True,
-                                   'PasswordKey': True,
-                                   'user': username})
+                check = ResetPasswordModel.validateCode(securityCodeReceived, user)
+                if check["status"]:
+                    return render(
+                        request,
+                        self.template_name,
+                        {"securityKey": True, "PasswordKey": True, "user": username},
+                    )
                 else:
-                    errorMessage = check['error']
-                    return render(request,
-                                  self.template_name,
-                                  {'securityKey': True,
-                                   'PasswordKey': False,
-                                   'error': errorMessage.value,
-                                   'user': username})
+                    errorMessage = check["error"]
+                    return render(
+                        request,
+                        self.template_name,
+                        {
+                            "securityKey": True,
+                            "PasswordKey": False,
+                            "error": errorMessage.value,
+                            "user": username,
+                        },
+                    )
             else:
                 password = request.POST.get("password")
                 try:
                     validate_password(password)
                 except Exception as error:
                     errorMessage = list(error)[0]
-                    return render(request,
-                                  self.template_name,
-                                  {'securityKey': True,
-                                   'PasswordKey': True,
-                                   'error': errorMessage,
-                                   'user': username})
+                    return render(
+                        request,
+                        self.template_name,
+                        {
+                            "securityKey": True,
+                            "PasswordKey": True,
+                            "error": errorMessage,
+                            "user": username,
+                        },
+                    )
                 user.set_password(password)
                 user.save()
                 messages.success(
-                    request,
-                    AuthConstants.passwordUpdated.value,
-                    fail_silently=True)
-                return HttpResponseRedirect(reverse('loginsignup:login'))
+                    request, AuthConstants.passwordUpdated.value, fail_silently=True
+                )
+                return HttpResponseRedirect(reverse("loginsignup:login"))
 
 
 class ResendCodeView(RedirectView):
@@ -184,7 +187,5 @@ class CompleteView(LoginRequiredMixin, View):
         if beaverForm.checkProfile(request):
             return HttpResponse("Feed")
         else:
-            kwargs = {
-                'form': beaverForm,
-            }
+            kwargs = {"form": beaverForm}
             return render(request, self.template_name, kwargs)

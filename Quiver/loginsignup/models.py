@@ -6,35 +6,23 @@ from chat.models import ChatInfo
 from .managers import BeaverManager
 from .constants import ImageConstant, ResetConstants
 
-import datetime
-
 User = get_user_model()
 
 
 class Beaver(models.Model):
-    gender_choice = [
-        ("M", "Male"),
-        ("F", "Female"),
-        ("N", "Cannot Specify"),
-    ]
+    gender_choice = [("M", "Male"), ("F", "Female"), ("N", "Cannot Specify")]
     objects = BeaverManager()
-    user = models.OneToOneField(
-        User,
-        related_name="users",
-        on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="users", on_delete=models.CASCADE)
     gender = models.CharField(
-        max_length=1,
-        choices=gender_choice,
-        default="Cannot Specify",
+        max_length=1, choices=gender_choice, default="Cannot Specify"
     )
     bio = models.TextField(
-        help_text="Enter your profile bio",
-        default="Hello everyone",
-        blank=True)
+        help_text="Enter your profile bio", default="Hello everyone", blank=True
+    )
     date_of_birth = models.DateField(auto_now=False)
     profile_photo = models.ImageField(
         upload_to="images/profile/",
-        help_text='Profile Photo',
+        help_text="Profile Photo",
         default=ImageConstant.defaultImage.value,
     )
     phone = models.BigIntegerField()
@@ -59,10 +47,8 @@ class Beaver(models.Model):
 
 class ResetPasswordModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    securityCode = models.IntegerField(
-        null=True, blank=True)  # Min should be 100000
-    timeCreated = models.DateTimeField(
-        auto_now_add=True)
+    securityCode = models.IntegerField(null=True, blank=True)  # Min should be 100000
+    timeCreated = models.DateTimeField(auto_now_add=True)
     # Remove this entry if time becomes more than 5 mins
 
     class Meta:
@@ -78,24 +64,14 @@ class ResetPasswordModel(models.Model):
     def validateCode(cls, securityCode, user):
         resetPasswordInstance, created = cls.objects.get_or_create(user=user)
         getCreated = resetPasswordInstance.timeCreated
-        minuteDiff = (timezone.now() - getCreated) / \
-            timezone.timedelta(minutes=1)
+        minuteDiff = (timezone.now() - getCreated) / timezone.timedelta(minutes=1)
         # Time limit has been exceeded then delete
-        if(minuteDiff > 5):
+        if minuteDiff > 5:
             resetPasswordInstance.delete()
-            return {
-                'status': False,
-                'error': ResetConstants.timeExceeded
-            }
+            return {"status": False, "error": ResetConstants.timeExceeded}
         else:
             if securityCode != resetPasswordInstance.securityCode:
-                return {
-                    'status': False,
-                    'error': ResetConstants.noMatch
-                }
+                return {"status": False, "error": ResetConstants.noMatch}
             else:
                 resetPasswordInstance.delete()
-                return {
-                    'status': True,
-                    'error': None
-                }
+                return {"status": True, "error": None}
