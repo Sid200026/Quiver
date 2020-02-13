@@ -49,21 +49,22 @@ class ChatInfo(models.Model):
         return cls.objects.select_related('member1').filter(
             member1=beaver) | cls.objects.select_related('member2').filter(
             member2=beaver)
-    
+
     @classmethod
     def convertUUIDToString(cls, uniqueid):
         return str(uniqueid)
-    
+
     @classmethod
     def convertStringToUUID(cls, string):
         return uuid.UUID(string)
-    
+
     def getAllMessages(self):
         getMessages = self.messages.all()
         response = []
         for messageDetail in getMessages:
             messageInfo = {}
-            messageInfo['message'] = ChatMessage.decryptMessage(messageDetail.message, urlparam = messageDetail.chatinfo.urlparam)
+            messageInfo['message'] = ChatMessage.decryptMessage(
+                messageDetail.message, urlparam=messageDetail.chatinfo.urlparam)
             messageInfo['sender'] = messageDetail.sender.user.username
             response.append(messageInfo)
         return response
@@ -82,7 +83,7 @@ class ChatMessage(models.Model):
         related_name="messages_sent",
         related_query_name="message_sent")
     message = models.TextField(null=False)
-    timeSent = models.DateTimeField(auto_now_add=True)  
+    timeSent = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Chat Messages"
@@ -119,8 +120,10 @@ class ChatMessage(models.Model):
             }
         publicKey = chat_info.publicKey.encode("utf8")
         fernet = Fernet(publicKey)
-        # Convert the message into byte and then convert the encrypted byte string into string
-        encryptedMessage = fernet.encrypt(message.encode("utf8")).decode("utf8")
+        # Convert the message into byte and then convert the encrypted byte
+        # string into string
+        encryptedMessage = fernet.encrypt(
+            message.encode("utf8")).decode("utf8")
         cls.objects.create(
             chatinfo=chat_info,
             sender=sender,
