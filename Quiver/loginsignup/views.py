@@ -162,7 +162,7 @@ class ResendCodeView(RedirectView):
 
 
 class LogoutView(RedirectView):
-    permanent = True
+    permanent = False
     pattern_name = "loginsignup:login"
 
     def dispatch(self, request, *args, **kwargs):

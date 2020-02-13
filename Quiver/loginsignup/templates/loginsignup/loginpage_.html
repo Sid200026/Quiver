@@ -15,7 +15,6 @@
         <div class="navbar">
             <nav>
                 <ul>
-
                     <li><a target="_blank" href="https://github.com/Sid200026/Quiver/blob/master/LICENSE">Terms and Conditions</a></li>
                     <li><a target="_blank" href="https://github.com/Sid200026/Quiver/issues/new">Contact Us</a></li>
                     <li><a href={% url 'loginsignup:login' %}>Log In</a></li>
@@ -40,7 +39,11 @@
         <br>
         {% if messages %}
         {% for message in messages %}
-        <h5 class="errorfield">{{message}}</h5>
+         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h5 class="errorfield success">{{message}}</h5>
+        {% else %}
+            <h5 class="errorfield">{{message}}</h5>
+        {% endif %}
         {% endfor %}
         {% endif %}
         {% if form.errors %}

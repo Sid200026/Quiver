@@ -1,0 +1,144 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+html {
+    background-color: rgb(24, 17, 26);
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    height: 100vh;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(79, 17, 82);
+  }
+  
+  li {
+    float: right;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 17.5;
+    font-weight: 400;
+  }
+  
+  
+  li a:hover {
+    background-color: rgb(107, 16, 107);
+  }
+  
+  /* navigation bar*/
+  .navQuiver {
+    float: left;
+    font-size: 33;
+    color: white;
+    font-family: 'Oleo Script', cursive;
+    font-weight: 100;
+    margin-top: 7;
+    margin-left: 10;
+  
+  }
+
+  .container{
+    margin-top:50px;
+    width:100%;
+    height:80%;
+    display: flex;
+    justify-content: center;
+  }
+  .chatwindow{
+    width:90%;
+    position: relative;
+    height:100%;
+  }
+  .chatusers{
+    position: absolute;
+    left:0px;
+    height:100%;
+    width:20%;
+    background: rgb(230, 226, 226);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border:2px solid purple;
+  }
+  .heading{
+    margin-top:10px;
+    padding-bottom: 9px;
+    border-bottom: 2px solid black;
+    width:100%;
+    text-align: center;
+    font-weight: 100;
+    color:purple
+  }
+  .chatmessage{
+    position: absolute;
+    right:0px;
+    width: 80%;
+    height:100%;
+    background: rgb(230, 226, 226);
+    border:2px solid purple;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .userlogo{
+    width:70px;
+    height:auto;
+    border-radius: 20px;
+    margin-left: 10px;
+  }
+  .userimage{
+    position: absolute;
+    height:50px;
+    width:30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .userlist{
+    width:100%; 
+    height:100%;
+    overflow-y: scroll;
+  }
+  ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+      background: #FF0000;
+  }
+  .user{
+    position: relative;;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width:100%;
+    height: 80px;
+    border-bottom: 2px dotted purple;
+  }
+  .usertext{
+    position: absolute;
+    right:10px;
+    width:70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:50px;
+  }
+  .container a{
+    text-decoration: none;
+    color:black;
+  }
