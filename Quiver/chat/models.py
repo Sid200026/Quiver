@@ -3,6 +3,7 @@ import uuid
 from .constants import MessageConstants
 import string
 import base64
+from .managers import ChatMessageManager
 from cryptography.fernet import Fernet
 
 generatePublicKey = Fernet.generate_key().decode("utf8")
@@ -56,9 +57,20 @@ class ChatInfo(models.Model):
     @classmethod
     def convertStringToUUID(cls, string):
         return uuid.UUID(string)
+    
+    def getAllMessages(self):
+        getMessages = self.messages.all()
+        response = []
+        for messageDetail in getMessages:
+            messageInfo = {}
+            messageInfo['message'] = ChatMessage.decryptMessage(messageDetail.message, urlparam = messageDetail.chatinfo.urlparam)
+            messageInfo['sender'] = messageDetail.sender.user.username
+            response.append(messageInfo)
+        return response
 
 
 class ChatMessage(models.Model):
+    objects = ChatMessageManager()
     chatinfo = models.ForeignKey(
         ChatInfo,
         on_delete=models.CASCADE,
@@ -94,7 +106,7 @@ class ChatMessage(models.Model):
         return fernet.decrypt(message.encode("utf8")).decode("utf8")
 
     # Sender must be a beaver instance
-
+    # urlparam must be an UUID
     @classmethod
     def createMessage(cls, urlparam, sender, message):
         chat_info = None

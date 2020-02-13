@@ -2,9 +2,8 @@ Django==3.0.0
 djangorestframework==3.10.2
 Pillow==6.2.1
 bs4==0.0.1
-Faker==3.0.0
-django-phone-field==1.8.0
 autopep8==1.4.4
 requests===2.22.0
 lxml===4.4.2
 cryptography==2.8
+channels==2.4.0
