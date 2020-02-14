@@ -4,8 +4,10 @@ from .constants import MessageConstants
 from .managers import ChatMessageManager
 from cryptography.fernet import Fernet
 
+
 def getKey():
     return Fernet.generate_key().decode("utf8")
+
 
 class ChatInfo(models.Model):
     member1 = models.ForeignKey(

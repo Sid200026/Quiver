@@ -3,7 +3,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 import json
 from .forms import ChatMessageForm
-import logging
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -26,13 +25,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = self.scope["user"].username
         status = await self.sendMessageToDB(message)
         dic = {
-            'message':message,
-            'sender':username,
+            "message": message,
+            "sender": username,
         }
         if status:
-        # Send message to room group
+            # Send message to room group
             await self.channel_layer.group_send(
-                self.room_group_name, {"type": "chat_message", "dic":dic}
+                self.room_group_name, {"type": "chat_message", "dic": dic}
             )
 
     # Receive message from room group
@@ -40,11 +39,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["dic"]["message"]
         sender = event["dic"]["sender"]
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message, "sender":sender}))
+        await self.send(text_data=json.dumps({"message": message, "sender": sender}))
 
     @database_sync_to_async
     def sendMessageToDB(self, message):
-        form = ChatMessageForm({'message':message})
+        form = ChatMessageForm({"message": message})
         user = self.scope["user"]
         status = form.createNewMessage(self.room_name, user)
         return status

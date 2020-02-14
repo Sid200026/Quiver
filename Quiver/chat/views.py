@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from loginsignup.utils import getBeaverInstance
@@ -48,7 +47,7 @@ class RoomView(LoginRequiredMixin, TemplateView):
         context["friends"] = friends
         urlparam = kwargs.get("urlparam")
         uuidParam = ChatInfo.convertStringToUUID(urlparam)
-        response = ChatInfo.objects.get(urlparam = uuidParam)
+        response = ChatInfo.objects.get(urlparam=uuidParam)
         talkingTo = response.member1
         if beaverInstance == talkingTo:
             talkingTo = response.member2
