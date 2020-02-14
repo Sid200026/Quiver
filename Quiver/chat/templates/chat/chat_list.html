@@ -30,21 +30,23 @@
                 <h1 class="heading">Quiver Chat</h1>
                 <div class="userlist">
                     <div class="userholder">
-                        <a href="#">
-                            <div class="user">
-                                <div class="userimage">
-                                    <img class="userlogo" src={% static 'loginsignup/friends.jpeg'%}></img>
+                        {% for friend in friends %}
+                            <a href={% url 'chat:room' friend.urlparam %}>
+                                <div class="user">
+                                    <div class="userimage">
+                                        <img class="userlogo" src={{friend.profile.url}} alt={{friend.friend}}></img>
+                                    </div>
+                                    <div class="usertext">
+                                        <p>{{friend.friend}}</p>
+                                    </div>
                                 </div>
-                                <div class="usertext">
-                                    <p>Siddharth</p>
-                                </div>
-                            </div>
-                        <a>
+                            <a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
             <div class="chatmessage">
-                <h1>Select </h1>
+                <img src={% static 'chat/official.png' %} alt="Quiver" class="official">
             </div>
         </div>
     </div>

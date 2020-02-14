@@ -1,13 +1,13 @@
 # chat/consumers.py
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-
+import logging as log
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
-
+        log.error(self.room_group_name)
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
