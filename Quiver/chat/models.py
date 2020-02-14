@@ -48,7 +48,7 @@ class ChatInfo(models.Model):
 
     @classmethod
     def convertUUIDToString(cls, uniqueid):
-        return str(uniqueid).replace("-","")
+        return str(uniqueid).replace("-", "")
 
     @classmethod
     def convertStringToUUID(cls, string):

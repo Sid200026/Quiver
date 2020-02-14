@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from loginsignup.utils import getBeaverInstance
 from .models import ChatInfo
 
+
 class ChatListView(LoginRequiredMixin, TemplateView):
     template_name = "chat/chat_list.html"
 
@@ -22,7 +23,7 @@ class ChatListView(LoginRequiredMixin, TemplateView):
             dic["friend"] = friendInstance.user.username
             dic["profile"] = friendInstance.profile_photo
             friends.append(dic)
-        context['friends'] = friends
+        context["friends"] = friends
         return context
 
 
