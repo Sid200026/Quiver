@@ -1,6 +1,6 @@
 from django import forms
 from .models import ChatMessage, ChatInfo
-from loginsignup.utils import getBeaverInstance
+from loginsignup.utils import getBeaverInstanceFromUser
 
 
 class ChatMessageForm(forms.ModelForm):
@@ -8,12 +8,12 @@ class ChatMessageForm(forms.ModelForm):
         model = ChatMessage
         fields = ["message"]
 
-    def createNewMessage(self, urlparam, request):
+    def createNewMessage(self, urlparam, user):
         status = super().is_valid()
         if not status:
             return status
         message = self.cleaned_data.get("message")
-        beaver = getBeaverInstance(request)
+        beaver = getBeaverInstanceFromUser(user)
         uuidUrlparam = ChatInfo.convertStringToUUID(urlparam)
         response = ChatMessage.createMessage(uuidUrlparam, beaver, message)
         return response.get("status")

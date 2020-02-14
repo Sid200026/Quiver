@@ -99,7 +99,7 @@ ul {
   .userlogo{
     width:70px;
     height:auto;
-    border-radius: 20px;
+    border-radius: 50%;
     margin-left: 10px;
   }
   .userimage{

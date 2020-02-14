@@ -4,8 +4,8 @@ from .constants import MessageConstants
 from .managers import ChatMessageManager
 from cryptography.fernet import Fernet
 
-generatePublicKey = Fernet.generate_key().decode("utf8")
-
+def getKey():
+    return Fernet.generate_key().decode("utf8")
 
 class ChatInfo(models.Model):
     member1 = models.ForeignKey(
@@ -21,10 +21,10 @@ class ChatInfo(models.Model):
         related_query_name="memTwo",
     )
     urlparam = models.UUIDField(
-        "URL Parameter", primary_key=True, default=uuid.uuid4(), editable=False
+        "URL Parameter", primary_key=True, default=uuid.uuid4, editable=False
     )
     publicKey = models.CharField(
-        "Encryption key", max_length=32, default=generatePublicKey, editable=False
+        "Encryption key", max_length=32, default=getKey, editable=False
     )
 
     class Meta:
