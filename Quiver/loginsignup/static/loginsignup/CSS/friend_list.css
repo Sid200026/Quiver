@@ -1,0 +1,104 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: rgb(24, 17, 26);
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    height: 100vh;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(79, 17, 82);
+  }
+  
+  li {
+    float: right;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 17.5;
+    font-weight: 400;
+  }
+  
+  
+  li a:hover {
+    background-color: rgb(107, 16, 107);
+  }
+  
+  /* navigation bar*/
+  .navQuiver {
+    float: left;
+    font-size: 33;
+    color: white;
+    font-family: 'Oleo Script', cursive;
+    font-weight: 100;
+    margin-top: 7;
+    margin-left: 10;
+  
+  }
+  .container{
+      width:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      overflow-y: auto;
+  }
+  .friend-image{
+      width:100%;
+      height: 180px;
+  }
+  .card{
+      padding:10px;
+      width:250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #e6e6e6;
+      border-radius: 6px;
+      height:300px;
+      margin:30px 20px;
+      box-shadow: 0 0 20px -10px white;
+      position: relative;
+      cursor: pointer;
+  }
+  .card:hover .friend-image{
+      filter:contrast(10%);
+  }
+  .card:hover .bio{
+      display: initial;
+  }
+  .username{
+      margin-top: 20px;
+      font-size: 25px;
+  }
+  .bio{
+      color:#e6e6e6;
+      display: none;
+      position: absolute;
+      width:85%;
+      text-align: center;
+      margin-top:15px;
+  }
+  .main-heading{
+    text-align: center;
+    color:white;
+    border-bottom: 2px solid gray;
+    width:18%;
+    margin-left: 41%;
+    padding:20px 0px;
+  }

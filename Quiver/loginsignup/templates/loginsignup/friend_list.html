@@ -1,0 +1,37 @@
+{% load static %}
+{% load loginsignup_extras %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiver</title>
+    <link rel="stylesheet" href={% static 'loginsignup/css/friend_list.css'%}
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href={% url 'loginsignup:logout' %}>Logout</a></li>
+                    <li><a href={% url 'loginsignup:login' %}>Feed</a></li>
+                    <li><a href={% url 'chat:chatList' %}>Chat</a></li>
+                    <li><a href={% url 'loginsignup:login' %}>Your Profile</a></li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <h1 class="main-heading">Your Friends</h1>
+    <div class="container">
+        <div class="card">
+            <img src={% static 'loginsignup/friends.jpeg'%} alt="username" class="friend-image">
+            <p class="username">Siddharth</p>
+            <p class="bio">{{"Hi this is bioHi this is bioHi this is bifndkrgfjnfdkjljfn djmklsfn mkln jlmkn jloHi this is bioHi this is bioHi this is bioHi this is bioHi this is bio"|someWords}}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,6 +6,7 @@ from .views import (
     LogoutView,
     ResendCodeView,
     CompleteView,
+    FriendsListView,
 )
 from django.views.generic import TemplateView
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path("reset/", ResetPasswordView.as_view(), name="reset"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("resendpassword/", ResendCodeView.as_view(), name="resend"),
+    path("friends/", FriendsListView.as_view(), name="friends"),
 ]

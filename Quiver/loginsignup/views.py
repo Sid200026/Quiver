@@ -6,6 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import RedirectView
+from django.views.generic import TemplateView
 from django.contrib import messages
 
 from random import randint
@@ -189,3 +190,11 @@ class CompleteView(LoginRequiredMixin, View):
         else:
             kwargs = {"form": beaverForm}
             return render(request, self.template_name, kwargs)
+
+
+class FriendsListView(LoginRequiredMixin, TemplateView):
+    template_name = "loginsignup/friend_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
