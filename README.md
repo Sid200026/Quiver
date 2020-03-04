@@ -42,7 +42,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_
 * **Siddharth Singha Roy** - *Initial work on Backend* - [Sid200026](https://github.com/Sid200026)
 * **Rajlaxmi Roy** - *Initial work on Frontend* - [rosy2000](https://github.com/rosy2000)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Sid200026/Quiver/contributors) who participated in this project.
 
 ## License
 
