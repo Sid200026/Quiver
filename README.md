@@ -1,6 +1,6 @@
 # Quiver
 
-![Commit Activity](https://img.shields.io/github/commit-activity/y/Sid200026/Quiver) [![Issues](https://img.shields.io/github/issues/Sid200026/Quiver)](https://github.com/Sid200026/Quiver/issues) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
+![Commit Activity](https://img.shields.io/github/commit-activity/m/Sid200026/Quiver) [![Issues](https://img.shields.io/github/issues/Sid200026/Quiver)](https://github.com/Sid200026/Quiver/issues) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
 
 ## A social media website made using Django
 
