@@ -25,7 +25,7 @@
 ### Installing
 
 `cd Quiver`
-### 3. Now we need to migrate the database
+
 `python3 manage.py makemigrations`
 
 `python3 manage.py migrate`
