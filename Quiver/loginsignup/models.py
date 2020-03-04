@@ -5,11 +5,16 @@ from chat.models import ChatInfo
 
 from .managers import BeaverManager
 from .constants import ImageConstant, ResetConstants
+from django.core.validators import RegexValidator
 
 User = get_user_model()
 
 
 class Beaver(models.Model):
+    phone_number_regex = RegexValidator(
+        regex="^[1-9][0-9]{9}$",
+        message="Not a valid phone number",
+    )
     gender_choice = [("M", "Male"), ("F", "Female"), ("N", "Cannot Specify")]
     objects = BeaverManager()
     user = models.OneToOneField(User, related_name="users", on_delete=models.CASCADE)
@@ -25,7 +30,7 @@ class Beaver(models.Model):
         help_text="Profile Photo",
         default=ImageConstant.defaultImage.value,
     )
-    phone = models.BigIntegerField()
+    phone = models.BigIntegerField(validators=[phone_number_regex])
     friends = models.ManyToManyField("self", blank=True)
 
     class Meta:
