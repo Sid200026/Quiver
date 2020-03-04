@@ -12,8 +12,7 @@ User = get_user_model()
 
 class Beaver(models.Model):
     phone_number_regex = RegexValidator(
-        regex="^[1-9][0-9]{9}$",
-        message="Not a valid phone number",
+        regex="^[1-9][0-9]{9}$", message="Not a valid phone number",
     )
     gender_choice = [("M", "Male"), ("F", "Female"), ("N", "Cannot Specify")]
     objects = BeaverManager()
