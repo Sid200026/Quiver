@@ -43,11 +43,6 @@ class Beaver(models.Model):
         creator.friends.add(friend)
         ChatInfo.createChatInformation(creator, friend)
 
-    # TODO : Returns a queryset of friends
-    # Currently returns a reference to model manager
-    def get_all_friends(self):
-        return self.friends
-
     @classmethod
     def remove_friend(cls, creator, friend):
         friend1 = cls.objects.get(user=creator)

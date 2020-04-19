@@ -1,0 +1,34 @@
+{% load static %} {% load loginsignup_extras %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiver</title>
+    <link rel="stylesheet" href={% static 'loginsignup/css/navbar.css'%} </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% block css %} {% endblock %}
+
+    <body>
+        <header>
+            <div class="navbar">
+                <nav>
+                    <ul>
+                        <li><a href={% url 'loginsignup:logout' %}>Logout</a></li>
+                        <li><a href={% url 'loginsignup:login' %}>Feed</a></li>
+                        <li><a href={% url 'chat:chatList' %}>Chat</a></li>
+                        <li><a href={% url 'loginsignup:login' %}>Your Profile</a></li>
+                        <div class="newfont">
+                            <a href={% url 'loginsignup:landing'%} class="main">
+                                <li class="navQuiver">QUIVER</li>
+                            </a>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        {% block main %} {% endblock %} {% block scriptag %} {% endblock %}
+    </body>
+</head>
+
+</html>

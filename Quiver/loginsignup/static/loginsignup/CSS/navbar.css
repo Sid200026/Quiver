@@ -1,0 +1,53 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: rgb(24, 17, 26);
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    height: 100vh;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(79, 17, 82);
+}
+
+li {
+    float: right;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 17.5;
+    font-weight: 400;
+}
+
+li a:hover {
+    background-color: rgb(107, 16, 107);
+}
+
+
+/* navigation bar*/
+
+.navQuiver {
+    float: left;
+    font-size: 33;
+    color: white;
+    font-family: 'Oleo Script', cursive;
+    font-weight: 100;
+    margin-top: 7;
+    margin-left: 10;
+}

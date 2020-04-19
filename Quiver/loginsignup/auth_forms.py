@@ -1,10 +1,10 @@
+from .constants import AuthConstants
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate, login
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password  # noqa, flake8 issue
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.hashers import check_password  # noqa
 
-from .constants import AuthConstants
 
 User = get_user_model()
 
@@ -55,9 +55,12 @@ class UserSignUpForm(forms.ModelForm):
             return False
         return True
 
-    def signUpUser(self, request):
+    def signUpUser(self, request, commit=True):
         if self.is_valid():
-            user = self.save()
+            user = super().save(commit=False)
+            user.set_password(self.cleaned_data["password"])
+            if commit:
+                user.save()
             login(request, user)
             return True
         return False

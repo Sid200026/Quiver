@@ -1,4 +1,5 @@
 from django.shortcuts import render, reverse
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import logout
@@ -8,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import RedirectView
 from django.views.generic import TemplateView
 from django.contrib import messages
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from random import randint
 import logging as log
@@ -32,6 +35,9 @@ class LoginView(View):
         if userLoginForm.login_user(request):
             # Use a redirect to the feed page
             if Beaver.objects.filter(user=request.user).exists():
+                next = request.GET.get("next")
+                if next:
+                    return HttpResponseRedirect(next)
                 return HttpResponse("Feed")
             else:
                 return HttpResponseRedirect(reverse("loginsignup:complete"))
@@ -179,6 +185,7 @@ class LogoutView(RedirectView):
 class CompleteView(LoginRequiredMixin, View):
     form_class = BeaverForm
     template_name = "loginsignup/completeprofile.html"
+    redirect_field_name = "next"
 
     def get(self, request):
         return render(request, self.template_name)
@@ -193,8 +200,53 @@ class CompleteView(LoginRequiredMixin, View):
 
 
 class FriendsListView(LoginRequiredMixin, TemplateView):
-    template_name = "loginsignup/friend_list.html"
+    template_name = "loginsignup/friend_filter.html"
+    redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+        beaver = Beaver.objects.get(user=user)
+        search = self.request.GET.get("search") or ""
+        friends = beaver.friends.filter(user__username__icontains=search)
+        friend_list = []
+        for friend in friends:
+            friend_list.append(
+                {
+                    "name": friend.user.username,
+                    "profile_photo": friend.profile_photo,
+                    "bio": friend.bio,
+                }
+            )
+        paginator = Paginator(friend_list, 10)  # Show 10 contacts per page.
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        context["page_obj"] = page_obj
         return context
+
+
+def filter_friends(request):
+    if request.is_ajax():
+        user = request.user
+        if user is None:
+            return JsonResponse({})
+        beaver = Beaver.objects.get(user=user)
+        search = request.GET.get("search") or ""
+        friend_list = []
+        friends = beaver.friends.filter(user__username__icontains=search)
+        for friend in friends:
+            friend_list.append(
+                {
+                    "name": friend.user.username,
+                    "profile_photo": friend.profile_photo,
+                    "bio": friend.bio,
+                }
+            )
+        paginator = Paginator(friend_list, 10)  # Show 10 contacts per page.
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        data = render_to_string(
+            template_name="loginsignup/friend_filter_partial.html",
+            context={"page_obj": page_obj},
+        )
+        return JsonResponse(data, safe=False)

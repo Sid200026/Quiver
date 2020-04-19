@@ -7,6 +7,7 @@ from .views import (
     ResendCodeView,
     CompleteView,
     FriendsListView,
+    filter_friends,
 )
 from django.views.generic import TemplateView
 
@@ -22,4 +23,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("resendpassword/", ResendCodeView.as_view(), name="resend"),
     path("friends/", FriendsListView.as_view(), name="friends"),
+    path("ajax/friends/filter/", filter_friends),
 ]

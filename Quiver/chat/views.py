@@ -6,6 +6,7 @@ from .models import ChatInfo
 
 class ChatListView(LoginRequiredMixin, TemplateView):
     template_name = "chat/chat_list.html"
+    redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,6 +29,7 @@ class ChatListView(LoginRequiredMixin, TemplateView):
 
 class RoomView(LoginRequiredMixin, TemplateView):
     template_name = "chat/room.html"
+    redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
