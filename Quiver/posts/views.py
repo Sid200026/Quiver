@@ -1,7 +1,6 @@
 from django.shortcuts import reverse, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views import View
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse
@@ -37,7 +36,7 @@ class CreatePostView(LoginRequiredMixin, View):
 def get_hashtags(request):
     if request.is_ajax():
         response = getTrending()
-        if response.get("error") == None:
+        if response.get("error") is None:
             data = render_to_string(
                 template_name="posts/hashtags_partial.html",
                 context={"hashtags": response.get("hashtagArray")},
@@ -53,12 +52,10 @@ class PersonalProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
         beaver = getBeaverInstance(request)
-        posts = beaver.posts.all().order_by('posted_on')
-        kwargs = {
-            'profile': beaver,
-            'posts': posts
-        }
+        posts = beaver.posts.all().order_by("posted_on")
+        kwargs = {"profile": beaver, "posts": posts}
         return render(request, self.template_name, kwargs)
+
 
 class FeedView(LoginRequiredMixin, View):
     template_name = "posts/feed.html"
@@ -67,9 +64,10 @@ class FeedView(LoginRequiredMixin, View):
     def get(self, request):
         beaver = getBeaverInstance(request)
         kwargs = {
-            'profile': beaver,
+            "profile": beaver,
         }
         return render(request, self.template_name, kwargs)
+
 
 class UpdatePostView(LoginRequiredMixin, View):
     template_name = "posts/modify_post.html"
@@ -84,10 +82,10 @@ class UpdatePostView(LoginRequiredMixin, View):
             messages.error(request, message, fail_silently=True)
             return HttpResponseRedirect(reverse("posts:feed"))
         kwargs = {
-            "post":post,
+            "post": post,
         }
         return render(request, self.template_name, kwargs)
-    
+
     def post(self, request, id):
         postForm = self.form_class(request.POST, request.FILES)
         if postForm.is_valid():

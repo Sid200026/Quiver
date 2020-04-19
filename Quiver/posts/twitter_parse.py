@@ -8,7 +8,7 @@ def getTrending():
     # This website provides trending tweets for the last 24 hrs
     url = "https://trends24.in/"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"  # noqa
     }
     response = requests.get(url, headers=headers)
     if response.status_code != 200:

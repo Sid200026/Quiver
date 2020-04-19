@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import logout
 from django.contrib.auth.password_validation import validate_password
@@ -29,7 +29,7 @@ class LoginView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('posts:create-post'))
+            return HttpResponseRedirect(reverse("posts:create-post"))
         return render(request, self.template_name)
 
     def post(self, request):
@@ -54,7 +54,7 @@ class SignUpView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('posts:create-post'))
+            return HttpResponseRedirect(reverse("posts:create-post"))
         return render(request, self.template_name)
 
     def post(self, request):
@@ -74,7 +74,7 @@ class ResetPasswordView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('posts:create-post'))
+            return HttpResponseRedirect(reverse("posts:create-post"))
         securityKeyDisplay = False
         # Pass the resetpassword page here along with the above variable
         return render(
@@ -257,6 +257,7 @@ def filter_friends(request):
         )
         return JsonResponse(data, safe=False)
 
+
 def unfriend(request):
     if request.is_ajax():
         user = request.user
@@ -286,13 +287,13 @@ def unfriend(request):
         )
         return JsonResponse(data, safe=False)
 
+
 class BeaverListView(LoginRequiredMixin, TemplateView):
     template_name = "loginsignup/discover_filter.html"
     redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
         search = self.request.GET.get("search") or ""
         friends = Beaver.objects.filter(user__username__icontains=search)
         friend_list = []
@@ -309,6 +310,7 @@ class BeaverListView(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context["page_obj"] = page_obj
         return context
+
 
 def beaver_filter(request):
     if request.is_ajax():

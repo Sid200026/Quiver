@@ -59,14 +59,14 @@ class RoomView(LoginRequiredMixin, TemplateView):
             context["chatTo"] = talkingTo
             context["chatmssgs"] = response.getAllMessages()
             context["room_name"] = kwargs.get("urlparam")
-        except:
+        except Exception:
             pass
         return context
-    
+
     def dispatch(self, request, *args, **kwargs):
         urlparam = kwargs.get("urlparam")
         try:
-            uuidParam = ChatInfo.convertStringToUUID(urlparam)
-        except:
-            return HttpResponseRedirect(reverse('chat:chatList'))
+            ChatInfo.convertStringToUUID(urlparam)
+        except Exception:
+            return HttpResponseRedirect(reverse("chat:chatList"))
         return super(RoomView, self).dispatch(request, *args, **kwargs)

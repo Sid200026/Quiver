@@ -6,7 +6,7 @@ from loginsignup.utils import getBeaverInstance
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        exclude=["likes", "posted_on", "post_creator"]
+        exclude = ["likes", "posted_on", "post_creator"]
 
     def checkPost(self, request):
         if self.is_valid():
