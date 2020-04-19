@@ -1,0 +1,310 @@
+* {
+    overflow: auto;
+}
+
+.middle {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+}
+
+.mid-content {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.left {
+    position: fixed;
+    left: 1%;
+    top: 10%;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.profile {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+.details {
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.details p {
+    margin: 5px;
+    font-weight: 100;
+    font-size: 20px;
+}
+
+.info {
+    color: rgb(170, 170, 170);
+}
+
+.update {
+    margin: 20px;
+    padding: 10px 25px;
+    text-align: center;
+    border-radius: 25px;
+    font-size: 15px;
+    background: none;
+    color: white;
+}
+
+.update:hover {
+    cursor: pointer;
+    background: greenyellow;
+    color: black;
+}
+
+.update:focus {
+    outline: none;
+}
+
+.post {
+    margin: 15px;
+    position: relative;
+    background: rgb(7, 5, 7);
+    padding: 20px 0px 5px 0px;
+    border-radius: 25px;
+    width: 700px;
+}
+
+.post_photo {
+    width: 100%;
+    height: 350px;
+    padding-top: 70px;
+    border-radius: 25px;
+}
+
+.creator {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.poster_photo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid yellow;
+}
+
+.datepost {
+    margin-left: 10px;
+}
+
+.caption {
+    color: rgb(214, 214, 214);
+    margin-top: 25px;
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+.nophoto {
+    margin-top: 55px;
+}
+
+.option {
+    position: absolute;
+    top: 22px;
+    right: 25px;
+    font-size: 25px;
+    color: white;
+}
+
+.option {
+    cursor: pointer;
+}
+
+.btns {
+    width: 100%;
+    display: flex;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 10px 10px;
+    background: none;
+    border: 2px solid rgb(141, 138, 138);
+    width: 50%;
+    border-radius: 15px;
+    font-size: 18px;
+    color: white;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.likes:hover {
+    cursor: pointer;
+    background: rgb(41, 255, 244);
+    color: black;
+    border: 2px solid yellowgreen;
+}
+
+.comments:hover {
+    cursor: pointer;
+    background: yellowgreen;
+    color: black;
+    border: 2px solid rgb(41, 255, 244);
+}
+
+.delete {
+    position: absolute;
+    right: 25px;
+    top: 60px;
+    width: 100px;
+    text-align: right;
+    background: #800080;
+}
+
+#delete {
+    color: white;
+    padding: 5px;
+    border-top: 2px solid black;
+}
+
+.show {
+    display: none;
+}
+
+.right {
+    position: fixed;
+    right: 0px;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.requests {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.prof {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.request_photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border: 2px solid yellow;
+}
+
+.requester {
+    color: rgb(179, 179, 179);
+    margin-left: 10px;
+}
+
+.accept {
+    background: none;
+    border: 2px solid rgb(115, 255, 0);
+    color: white;
+    padding: 5px 15px;
+    margin-left: 20px;
+    border-radius: 25px;
+}
+
+.accept:hover {
+    background: yellowgreen;
+    cursor: pointer;
+    color: black;
+}
+
+.accept:focus {
+    outline: none;
+}
+
+.sub-heading {
+    font-size: 25px;
+    text-align: center;
+    font-weight: 100;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.more {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: yellowgreen;
+    margin-bottom: 60px;
+    margin-top: 20px;
+}
+
+.more:hover {
+    cursor: pointer;
+}
+
+.more:focus {
+    outline: none;
+}
+
+.send {
+    border: 2px solid red;
+}
+
+.send:hover {
+    background: red;
+    color: white;
+}
+
+.sendreq {
+    background: red;
+    color: white;
+}
+
+.success {
+    color: yellowgreen;
+    font-size: 22px;
+    font-weight: 200;
+}
+
+.errorfield {
+    color: red;
+    font-size: 22px;
+    font-weight: 200;
+}
+
+.viewall {
+    padding: 5px 15px;
+    margin-left: 15px;
+    background: yellowgreen;
+    border-radius: 25px;
+}
+
+.viewall:hover {
+    cursor: pointer;
+}
+
+.viewall:focus {
+    outline: none;
+}
+
+.except {
+    text-decoration: none;
+    color: white;
+}

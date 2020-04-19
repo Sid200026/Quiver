@@ -35,6 +35,28 @@ li a {
     font-weight: 400;
 }
 
+li input {
+    display: block;
+    color: black;
+    text-align: start;
+    padding: 1px 10px;
+    margin: 10px;
+    margin-right: 25px;
+    width: 230px;
+    height: 40px;
+    text-decoration: none;
+    font-size: 17.5;
+    font-weight: 400;
+    border-radius: 15px;
+    transition: width 1s;
+    padding-right: 50px;
+}
+
+li input:focus {
+    outline: none;
+    width: 500px;
+}
+
 li a:hover {
     background-color: rgb(107, 16, 107);
 }
@@ -50,4 +72,31 @@ li a:hover {
     font-weight: 100;
     margin-top: 7;
     margin-left: 10;
+}
+
+.navbar {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 5;
+}
+
+.holder {
+    margin-top: 5%;
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.searchicon {
+    height: 25px;
+    position: absolute;
+    right: 40px;
+}
+
+.searchicon:hover {
+    cursor: pointer;
 }

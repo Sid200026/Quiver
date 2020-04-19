@@ -13,7 +13,7 @@ class Post(models.Model):
     )
     posted_on = models.DateField(auto_now_add=True)
     caption = models.TextField(null=True)
-    picture = models.ImageField(null=True, upload_to="images/post/")
+    picture = models.ImageField(null=True, upload_to="images/post/", blank=True)
     likes = models.IntegerField(default=0)
 
     class Meta:

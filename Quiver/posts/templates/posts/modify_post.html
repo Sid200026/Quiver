@@ -1,0 +1,57 @@
+{% extends 'loginsignup/navbar.html' %} {% load static %} {% load loginsignup_extras %} {% block css %}
+<link rel="stylesheet" href={% static 'posts/css/post.css'%}> {% endblock %} {% block main %}
+<h1 class="main-heading">Changed your mind ?</h1>
+{% if post.picture %}
+<img class="imagepic" id="profileunique" src={{post.picture.url}}><br><br> {% else %}
+<img class="imagepic" id="profileunique"><br><br> {% endif %}
+<div class="container">
+    <h5 class="errorfield">{{ form.non_field_errors|errorOnly }} </h5>
+    <form class="formclass" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card">
+            <textarea autocorrect="on" autocapitalize="on" spellcheck="true" class="input" id="caption" name="caption" placeholder="A caption to express your thoughts" required>{{post.caption}}</textarea><br><br>
+            <input name="picture" onchange='openFile(event)' type="file" id="file" />
+            <label for="file" class="btn-2"><span>Modify photo</span></label>
+            <input type="hidden" value="1" name="method" id="method">
+            <div class="series">
+                <input type="submit" value="Update" class="submit updatebtn">
+                <button type="button" class="submit deletebtn">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="enter ">
+</div>
+{% endblock %} {% block scriptag %}
+<script src={% static 'loginsignup/JS/complete.js' %}></script>
+<script>
+    $(document).ready(function() {
+        const container = $('.enter')
+        const endpoint = '/post/ajax/hashtags/'
+        const delay_by_in_ms = 100
+        let scheduled_function = false
+
+        let ajax_call = function(endpoint) {
+            $.getJSON(endpoint)
+                .done(response => {
+                    container.fadeTo('fast', 0).promise().then(() => {
+                        container.html(response)
+                        container.fadeTo('fast', 1)
+                    })
+                })
+        }
+
+        if (scheduled_function) {
+            clearTimeout(scheduled_function)
+        }
+        // setTimeout returns the ID of the function to be executed
+        scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint)
+
+        $(".deletebtn").on("click", function() {
+            $("#method").val("2");
+            $(".formClass").submit();
+        })
+    })
+</script>
+{% endblock %}

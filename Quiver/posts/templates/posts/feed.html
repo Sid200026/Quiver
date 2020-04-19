@@ -1,0 +1,186 @@
+{% extends 'loginsignup/navbar.html' %} {% load static %} {% load loginsignup_extras %} {% block css %}
+<link rel="stylesheet" href={% static 'posts/css/me.css'%}> {% endblock %} {% block main %}
+<div class="container">
+    <div class="left">
+        <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Username" class="profile">
+        <div class="details">
+            <p class="username">@Username</p>
+            <p class="name">Name Singha Roy</p>
+            <p class="friends"><span class="info">Friends</span> : 63</p>
+            <p class="posts"><span class="info">Posts</span> : 23</p>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="mid-content">
+            {% if messages %} {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h5 class="success">{{message}}</h5>
+            {% else %}
+            <h5 class="errorfield">{{message}}</h5>
+            {% endif %} {% endfor %}{% endif %}
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <p class="caption nophoto">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+
+
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="creator">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="username" class="poster_photo">
+                    <p>Username</p>
+                    <p class="datepost">26.09.2000</p>
+                </div>
+                <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="post_photo">
+                <p class="caption">Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo Yooooooo</p>
+                <div class="btns">
+                    <button type="button" class="likes btn">45 Likes</button>
+                    <button type="button" class="comments btn">23 comments</button>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="requests">
+                <h1 class="sub-heading">Pending Requests</h1>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept">Accept Request</button>
+                </div>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept">Accept Request</button>
+                </div>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept">Accept Request</button>
+                </div>
+                <button type="button" class="more">View More</button>
+            </div>
+            <div class="friends">
+                <h1 class="sub-heading">Send Requests</h1>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept send">Send Request</button>
+                </div>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept send">Send Request</button>
+                </div>
+                <div class="prof">
+                    <img src="https://i.picsum.photos/id/922/400/600.jpg" alt="Post photo" class="request_photo">
+                    <p class="requester">@Username</p>
+                    <button type="button" class="accept send">Send Request</button>
+                </div>
+                <button type="button" class="more sendreq">View More</button>
+            </div>
+        </div>
+    </div>
+    {% endblock %} {% block scriptag %}
+    <script>
+    </script>
+    {% endblock %}

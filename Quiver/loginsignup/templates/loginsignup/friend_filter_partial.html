@@ -4,6 +4,7 @@
     <div class="card">
         <img src={{ friend.profile_photo.url }} alt={{friend.name}} class="friend-image">
         <p class="username">{{friend.name}}</p>
+        <button type="button" class="unfriend">Unfriend</button>
         <p class="bio">{{friend.bio|someWords}}</p>
     </div>
     {% endfor %}

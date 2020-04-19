@@ -6,17 +6,17 @@
 
 ### Features
 
-#### 1. Login, Register, Forgot Password
+- 1. Login, Register, Forgot Password
 
-#### 2. View posts by friends, Add friends, Search for users
+- 2. View posts by friends, Add friends, Search for users
 
-#### 3. Like, Share and Comment for posts
+- 3. Like, Share and Comment for posts
 
-#### 4. Create new posts ( Can add pictures too ). Also view current trending hashtags from twitter
+- 4. Create new posts ( Can add pictures too ). Also view current trending hashtags from twitter
 
-#### 5. Remove or block friends
+- 5. Remove or block friends
 
-#### 6. Chat with friends using Websockets protocol
+- 6. Chat with friends using Websockets protocol
 
 ### Prerequisites
 

@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import reverse
 from loginsignup.utils import getBeaverInstance
 from .models import ChatInfo
 
@@ -48,12 +50,23 @@ class RoomView(LoginRequiredMixin, TemplateView):
             friends.append(dic)
         context["friends"] = friends
         urlparam = kwargs.get("urlparam")
-        uuidParam = ChatInfo.convertStringToUUID(urlparam)
-        response = ChatInfo.objects.get(urlparam=uuidParam)
-        talkingTo = response.member1
-        if beaverInstance == talkingTo:
-            talkingTo = response.member2
-        context["chatTo"] = talkingTo
-        context["chatmssgs"] = response.getAllMessages()
-        context["room_name"] = kwargs.get("urlparam")
+        try:
+            uuidParam = ChatInfo.convertStringToUUID(urlparam)
+            response = ChatInfo.objects.get(urlparam=uuidParam)
+            talkingTo = response.member1
+            if beaverInstance == talkingTo:
+                talkingTo = response.member2
+            context["chatTo"] = talkingTo
+            context["chatmssgs"] = response.getAllMessages()
+            context["room_name"] = kwargs.get("urlparam")
+        except:
+            pass
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        urlparam = kwargs.get("urlparam")
+        try:
+            uuidParam = ChatInfo.convertStringToUUID(urlparam)
+        except:
+            return HttpResponseRedirect(reverse('chat:chatList'))
+        return super(RoomView, self).dispatch(request, *args, **kwargs)

@@ -1,11 +1,11 @@
-{% extends 'loginsignup/friend_list.html' %} {% load static %} {% load loginsignup_extras %} {% block content %}
+{% load static %} {% load loginsignup_extras %}
 <div class="container">
     {% for friend in page_obj %}
     <div class="card">
         <img src={{ friend.profile_photo.url }} alt={{friend.name}} class="friend-image">
         <p class="username">{{friend.name}}</p>
+        <button type="button" class="unfriend addfriend">Add Friend</button>
         <p class="bio">{{friend.bio|someWords}}</p>
-        <button type="button" class="unfriend" value={{friend.name}}>Unfriend</button>
     </div>
     {% endfor %}
 </div>
@@ -23,4 +23,3 @@
             <a class="special" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
         </span>
 </div>
-{% endblock %} 

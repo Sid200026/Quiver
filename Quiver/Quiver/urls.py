@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from posts.views import PersonalProfileView
 
 urlpatterns = [
     path("ws/chat/", include("chat.urls")),
+    path("post/", include("posts.urls")),
+    path("me/", PersonalProfileView.as_view(), name="personal"),
     path("", include("loginsignup.urls")),
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

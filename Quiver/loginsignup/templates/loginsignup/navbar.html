@@ -5,30 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiver</title>
-    <link rel="stylesheet" href={% static 'loginsignup/css/navbar.css'%} </head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href={% static 'loginsignup/css/navbar.css'%}>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
     {% block css %} {% endblock %}
+</head>
 
-    <body>
-        <header>
-            <div class="navbar">
-                <nav>
-                    <ul>
-                        <li><a href={% url 'loginsignup:logout' %}>Logout</a></li>
-                        <li><a href={% url 'loginsignup:login' %}>Feed</a></li>
-                        <li><a href={% url 'chat:chatList' %}>Chat</a></li>
-                        <li><a href={% url 'loginsignup:login' %}>Your Profile</a></li>
-                        <div class="newfont">
-                            <a href={% url 'loginsignup:landing'%} class="main">
-                                <li class="navQuiver">QUIVER</li>
-                            </a>
-                        </div>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-        {% block main %} {% endblock %} {% block scriptag %} {% endblock %}
-    </body>
+<body>
+    <header>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href={% url 'loginsignup:logout' %}>Logout</a></li>
+                    <li><a href={% url 'personal' %}>Your Profile</a></li>
+                    <li><a href={% url 'posts:create-post' %}>Post Something</a></li>
+                    <li><a href={% url 'chat:chatList' %}>Chat</a></li>
+                    <li><a href={% url 'posts:feed' %}>Feed</a></li>
+                    <li>
+                        <form class="searchbar" method="POST" onsubmit="return handleSubmit()">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Search for friends" class="searchbarbox" />
+                            <img class="searchicon" src="https://img.icons8.com/metro/26/000000/search.png" alt="Search" onclick="handleSubmit()" />
+                        </form>
+                    </li>
+                    <div class="newfont">
+                        <a href={% url 'loginsignup:landing'%} class="main">
+                            <li class="navQuiver">QUIVER</li>
+                        </a>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="holder">
+        {% block main %} {% endblock %}</div> {% block scriptag %} {% endblock %}
+    <script>
+        function handleSubmit() {
+            const value = document.getElementsByClassName("searchbarbox")[0].value;
+            window.location.href = `http://${window.location.host}/discover/?search=${value}`;
+            return false;
+        }
+    </script>
+</body>
 </head>
 
 </html>

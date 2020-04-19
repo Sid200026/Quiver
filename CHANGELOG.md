@@ -10,7 +10,6 @@
 - Friend recommendation system
 - UI Improvements
 - Group Chat
-- Live Streaming Services
 
 ## In Progress
 - Feed Page

@@ -1,3 +1,7 @@
+* {
+    overflow: hidden;
+}
+
 .container {
     width: 100%;
     display: flex;
@@ -106,4 +110,29 @@
 
 .search input:focus {
     outline: none !important;
+}
+
+.unfriend {
+    margin-top: 10px;
+    padding: 10px 30px;
+    border-radius: 25px;
+    background: rgb(255, 93, 93);
+    font-size: 15px;
+}
+
+.unfriend:hover {
+    cursor: pointer;
+    background: red;
+}
+
+.unfriend:focus {
+    outline: none;
+}
+
+.addfriend {
+    background: yellowgreen;
+}
+
+.addfriend:hover {
+    background: green;
 }

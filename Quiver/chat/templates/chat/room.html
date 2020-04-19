@@ -1,144 +1,121 @@
-{% load static %}
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href={% static 'chat/CSS/chat_list.css' %}>
-    <link rel="stylesheet" href={% static 'chat/CSS/room.css' %}>
-    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
-    <title>Quiver</title>
-</head>
-<body>
-    <header>
-        <div class="navbar">
-            <nav>
-                <ul>
-                    <li><a href={% url 'loginsignup:logout' %}>Logout</a></li>
-                    <li><a href={% url 'loginsignup:login' %}>Feed</a></li>
-                    <li><a href={% url 'chat:chatList' %}>Chat</a></li>
-                    <li><a href={% url 'loginsignup:login' %}>Your Profile</a></li>
-                    <div class="newfont">
-                        <a href={% url 'loginsignup:landing'%} class="main">
-                            <li class="navQuiver">QUIVER</li>
-                        </a>
-                    </div>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <div class="container">
-        <div class="chatwindow">
-            <div class="chatusers">
-                <h1 class="heading">Quiver Chat</h1>
-                <div class="userlist">
-                    <div class="userholder">
-                        {% for friend in friends %}
-                            <a href={% url 'chat:room' friend.urlparam %}>
-                                <div class="user">
-                                    <div class="userimage">
-                                        <img class="userlogo" src={{friend.profile.url}} alt={{friend.friend}}></img>
-                                    </div>
-                                    <div class="usertext">
-                                        <p>{{friend.friend}}</p>
-                                    </div>
-                                </div>
-                            <a>
-                        {% endfor %}
-                    </div>
+{% extends 'loginsignup/navbar.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href={% static 'chat/CSS/chat_list.css' %}>
+<link rel="stylesheet" href={% static 'chat/CSS/room.css' %}> {% endblock %} {% block main %}
+<div class="container">
+    <div class="chatwindow">
+        <div class="chatusers">
+            <h1 class="heading">Quiver Chat</h1>
+            <div class="userlist">
+                <div class="userholder">
+                    {% for friend in friends %}
+                    <a href={% url 'chat:room' friend.urlparam %}>
+                        <div class="user">
+                            <div class="userimage">
+                                <img class="userlogo" src={{friend.profile.url}} alt={{friend.friend}}></img>
+                            </div>
+                            <div class="usertext">
+                                <p>{{friend.friend}}</p>
+                            </div>
+                        </div>
+                        <a>
+                    {% endfor %}
                 </div>
             </div>
-            <div class="chatbox">
-                <div class="chatcontainer">
-                    <div class="heading custom">
-                        <div class="imageholder">
-                            <img src={{chatTo.profile_photo.url}} class="userlogo usercustom" alt={{chatTo.user.username}}></img>
-                        </div>
-                        <div class="name">
-                            <h5 class="header">{{chatTo.user.username}}</h5>
-                        </div>
+        </div>
+        <div class="chatbox">
+            <div class="chatcontainer">
+                <div class="heading custom">
+                    <div class="imageholder">
+                        <img src={{chatTo.profile_photo.url}} class="userlogo usercustom" alt={{chatTo.user.username}}></img>
                     </div>
-                    <div class="messages">
-                        {% for mssg in chatmssgs %}
-                        {% if mssg.sender == chatTo.user.username %}
-                            <div class="left">
-                                <div class="leftmessage">
-                                    <p>{{mssg.message}}</p>
-                                </div>
+                    <div class="name">
+                        <h5 class="header">{{chatTo.user.username}}</h5>
+                    </div>
+                </div>
+                <div class="messages">
+                    {% for mssg in chatmssgs %}
+                    {% if mssg.sender == chatTo.user.username %}
+                        <div class="left">
+                            <div class="leftmessage">
+                                <p>{{mssg.message}}</p>
                             </div>
-                        {% else %}
-                            <div class="right">
-                                <div class="rightmessage">
-                                    <p>{{mssg.message}}</p>
-                               </div>
-                            </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="textinput">
-                        <input id="chat-message-input" type="text" name="text" class="text" placeholder="Type a message">
-                        <img id="chat-message-submit" src={% static 'chat/add.png'%} alt="Add" class="add">
-                    </div>
+                        </div>
+                    {% else %}
+                        <div class="right">
+                            <div class="rightmessage">
+                                <p>{{mssg.message}}</p>
+                           </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="textinput">
+                    <input id="chat-message-input" type="text" name="text" class="text" placeholder="Type a message">
+                    <img id="chat-message-submit" src={% static 'chat/add.png'%} alt="Add" class="add">
                 </div>
             </div>
         </div>
     </div>
-    <script>
+</div>
+{% endblock %}
+{% block scriptag %}
+<script>
+    const element = document.getElementsByClassName("messages")[0];
+    element.scrollTop = element.scrollHeight;
+    const roomName = "{{ room_name|escapejs }}";
+
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + roomName + '/');
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data['message'];
+        const sender = data['sender'];
+        const notLoggedInUser = '{{chatTo.user.username|escapejs}}';
+        const getMessageWindow = document.getElementsByClassName("messages")[0];
+        // Write in Yellow
+        if(sender === notLoggedInUser) {
+            const divouter = document.createElement("div");
+            divouter.className = "left";
+            const divinner = document.createElement("div");
+            divinner.className = "leftmessage";
+            const textnode = document.createTextNode(message);
+            divinner.append(textnode);
+            divouter.append(divinner);
+            getMessageWindow.appendChild(divouter);
+        } else {
+            const divouter = document.createElement("div");
+            divouter.className = "right";
+            const divinner = document.createElement("div");
+            divinner.className = "rightmessage";
+            const textnode = document.createTextNode(message);
+            divinner.append(textnode);
+            divouter.append(divinner);
+            getMessageWindow.appendChild(divouter);
+        }
         const element = document.getElementsByClassName("messages")[0];
         element.scrollTop = element.scrollHeight;
-        const roomName = "{{ room_name|escapejs }}";
+    };
 
-        const chatSocket = new WebSocket(
-            'ws://' + window.location.host +
-            '/ws/chat/' + roomName + '/');
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            const message = data['message'];
-            const sender = data['sender'];
-            const notLoggedInUser = '{{chatTo.user.username|escapejs}}';
-            const getMessageWindow = document.getElementsByClassName("messages")[0];
-            // Write in Yellow
-            if(sender === notLoggedInUser) {
-                const divouter = document.createElement("div");
-                divouter.className = "left";
-                const divinner = document.createElement("div");
-                divinner.className = "leftmessage";
-                const textnode = document.createTextNode(message);
-                divinner.append(textnode);
-                divouter.append(divinner);
-                getMessageWindow.appendChild(divouter);
-            } else {
-                const divouter = document.createElement("div");
-                divouter.className = "right";
-                const divinner = document.createElement("div");
-                divinner.className = "rightmessage";
-                const textnode = document.createTextNode(message);
-                divinner.append(textnode);
-                divouter.append(divinner);
-                getMessageWindow.appendChild(divouter);
-            }
-            const element = document.getElementsByClassName("messages")[0];
-            element.scrollTop = element.scrollHeight;
-        };
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
 
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
 
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-
-            messageInputDom.value = '';
-        };
-    </script>
-</body>
-</html>
+        messageInputDom.value = '';
+    };
+</script>
+{% endblock %}

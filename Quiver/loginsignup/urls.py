@@ -7,7 +7,10 @@ from .views import (
     ResendCodeView,
     CompleteView,
     FriendsListView,
+    BeaverListView,
     filter_friends,
+    beaver_filter,
+    unfriend,
 )
 from django.views.generic import TemplateView
 
@@ -23,5 +26,8 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("resendpassword/", ResendCodeView.as_view(), name="resend"),
     path("friends/", FriendsListView.as_view(), name="friends"),
+    path("discover/", BeaverListView.as_view(), name="discover"),
     path("ajax/friends/filter/", filter_friends),
+    path("ajax/discover/filter/", beaver_filter),
+    path("ajax/unfriend/", unfriend),
 ]

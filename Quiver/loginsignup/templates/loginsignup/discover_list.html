@@ -2,7 +2,7 @@
 <link rel="stylesheet" href={% static 'loginsignup/css/friend_list.css'%} </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 {% endblock %} {% block main %}
-<h1 class="main-heading">Your Friends</h1>
+<h1 class="main-heading">Discover Friends</h1>
 <div class="search">
     <input id="input" type="text" placeholder="Friends's username">
 </div>
@@ -14,7 +14,7 @@
     $(document).ready(function() {
         const user_input = $("#input")
         const container = $('.temp')
-        const endpoint = '/ajax/friends/filter/'
+        const endpoint = '/ajax/discover/filter/'
         const delay_by_in_ms = 100
         let scheduled_function = false
 
@@ -42,25 +42,8 @@
             // setTimeout returns the ID of the function to be executed
             scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
         })
-
-        $(".unfriend").on('click', function() {
-
-            const unfriend_endpoint = "/ajax/unfriend/"
-
-            const request_parameters = {
-                username: $(this).val() // value of user_input: the HTML element with ID user-input
-            }
-
-            // if scheduled_function is NOT false, cancel the execution of the function
-            if (scheduled_function) {
-                clearTimeout(scheduled_function)
-            }
-
-            // setTimeout returns the ID of the function to be executed
-            scheduled_function = setTimeout(ajax_call, delay_by_in_ms, unfriend_endpoint, request_parameters)
-        })
-    })
-    {% block addscript %}
-    {% endblock %}
+    }) 
 </script>
+{% block addscript %}
+{% endblock %}
 {% endblock %}
