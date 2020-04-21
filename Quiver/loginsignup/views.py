@@ -19,8 +19,18 @@ from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm
 from .constants import AuthConstants
 from .auth_forms import UserLoginForm, UserSignUpForm
+from .utils import getBeaverInstance
 
 User = get_user_model()
+
+
+class LandingView(View):
+    template_name = "loginsignup/landing.html"
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("posts:feed"))
+        return render(request, self.template_name)
 
 
 class LoginView(View):
@@ -29,7 +39,7 @@ class LoginView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("posts:create-post"))
+            return HttpResponseRedirect(reverse("posts:feed"))
         return render(request, self.template_name)
 
     def post(self, request):
@@ -336,3 +346,17 @@ def beaver_filter(request):
             context={"page_obj": page_obj},
         )
         return JsonResponse(data, safe=False)
+
+
+class UpdateProfileView(LoginRequiredMixin, View):
+    template_name = "loginsignup/updateprofile.html"
+    redirect_field_name = "next"
+
+    def get(self, request):
+        user = request.user
+        beaver = getBeaverInstance(request)
+        kwargs = {
+            "user": user,
+            "beaver": beaver,
+        }
+        return render(request, self.template_name, kwargs)

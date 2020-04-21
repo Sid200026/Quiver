@@ -1,0 +1,85 @@
+{% extends 'loginsignup/navbar.html' %} 
+{% load static %} {% load loginsignup_extras %} 
+{% block css %}
+<link rel="stylesheet" href={% static 'loginsignup/css/update.css'%} </head>
+{% endblock %}
+{% block main %}
+<form>
+<div class="left">
+    <div class="small">
+        <label for="username">Username</label>
+        <input type="text" value={{user.username}} name="username" required placeholder="Example : johniscool@101">
+    </div>
+    <div class="small">
+        <label for="firstname">First Name</label>
+        <input type="text" value={{user.first_name}} name="first_name" required placeholder="Example : John">
+    </div>
+    <div class="small">
+        <label for="username">Last Name</label>
+        <input type="text" value={{user.last_name}} name="last_name" required placeholder="Example : Doe">
+    </div>
+    <div class="small">
+        <label for="dob">Date of birth</label>
+        <input type="date" name="date_of_birth" id="special" required placeholder="Example : 26.0.2000">
+    </div>
+    <div class="small">
+        <label for="gender">Gender</label>
+        <select required name="gender" id="gender">
+            {% if "M" == beaver.gender %}
+                <option value="M" selected="selected">Male</option>
+            {% else %}
+                <option value="M">Male</option>
+            {% endif %}
+            {% if "F" == beaver.gender %}
+                <option value="F" selected="selected">Female</option>
+            {% else %}
+                <option value="F">Male</option>
+            {% endif %}
+            {% if "N" == beaver.gender %}
+                <option value="N" selected="selected">Cannot Specify Option</option>
+            {% else %}
+                <option value="N">Male</option>
+            {% endif %}
+        </select>
+    </div>
+</div>
+<div class="right">
+    <div class="small">
+        <label for="email">Email</label>
+        <input type="text" value={{user.email}} name="email" required placeholder="Example : john@doe.com">
+    </div>
+    <div class="small">
+        <label for="firstname">Phone Number</label>
+        <input type="text" value={{beaver.phone}} name="phone" required placeholder="Example : 1234-123-433">
+    </div>
+    <div class="small">
+        <label for="username">Last Name</label>
+        <input type="text" value={{user.last_name}} name="last_name" required placeholder="Example : Doe">
+    </div>
+    <div class="small">
+        <label for="bio">Bio</label>
+        <textarea name="bio" placeholder="A sentence or two to describe you">{{beaver.bio}}</textarea>
+    </div>
+</div>
+<div class="middle">
+    <div class="box">
+        <h1 class="heading">Update Profile</h1>
+        <img src={{beaver.profile_photo.url}} alt="Profile Picture" class="profile_photo" id="profileunique"><br />
+        <input name="picture" onchange='openFile(event)' type="file" id="file" />
+        <label for="file" class="btn-2"><span>Upload a photo</span></label><br />
+        <input type="submit" value="Update" class="update">
+    </div>
+</div>
+</form>
+{% endblock %}
+{% block scriptag %}
+    <script src={% static 'loginsignup/JS/complete.js' %}></script>
+    <script>
+        const ele = document.getElementById("special")
+        const date = new Date({{beaver.date_of_birth|date:"y-m-d"}});;
+        console.log{{beaver.date_of_birth|date:"Y M D"}}
+        console.log(date.toISOString())
+        ele.value = date.toISOString().split('T')[0];
+    </script>
+
+{% endblock %}

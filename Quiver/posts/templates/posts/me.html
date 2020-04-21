@@ -10,7 +10,7 @@
                 <p class="friends"><span class="info">Friends</span> : 63<button type="button" class="viewall">View All</button></p>
             </a>
             <p class="posts"><span class="info">Posts</span> : 23</p>
-            <button type="button" class="update">Update Details</button>
+            <button type="button" class="update" onclick="handleClick()">Update Details</button>
         </div>
     </div>
     <div class="middle">
@@ -194,5 +194,8 @@
     </div>
     {% endblock %} {% block scriptag %}
     <script>
+        handleClick = () => {
+            window.location.href = `http://${window.location.host}/update/`;
+        }
     </script>
     {% endblock %}
