@@ -127,6 +127,8 @@ ASGI_APPLICATION = "Quiver.routing.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # fmt: off
         "CONFIG": {"hosts": [("127.0.0.1", 6379)], },
+        # fmt: on
     },
 }

@@ -26,7 +26,7 @@ class CreatePostView(LoginRequiredMixin, View):
         if postForm.checkPost(request):
             message = "Post created successfully"
             messages.success(request, message, fail_silently=True)
-            return HttpResponseRedirect(reverse("posts:feed"))
+            return HttpResponseRedirect(reverse("personal"))
         else:
             log.error(postForm)
             kwargs = {"form": postForm}
@@ -52,7 +52,7 @@ class PersonalProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
         beaver = getBeaverInstance(request)
-        posts = beaver.posts.all().order_by("posted_on")
+        posts = beaver.posts.all().order_by("-posted_on")
         kwargs = {"profile": beaver, "posts": posts}
         return render(request, self.template_name, kwargs)
 
@@ -80,7 +80,7 @@ class UpdatePostView(LoginRequiredMixin, View):
         if post is None:
             message = "Cannot be find the specified post"
             messages.error(request, message, fail_silently=True)
-            return HttpResponseRedirect(reverse("posts:feed"))
+            return HttpResponseRedirect(reverse("personal"))
         kwargs = {
             "post": post,
         }
@@ -96,21 +96,22 @@ class UpdatePostView(LoginRequiredMixin, View):
                 if post is None:
                     message = "Cannot be find the specified post"
                     messages.error(request, message, fail_silently=True)
-                    return HttpResponseRedirect(reverse("posts:feed"))
+                    return HttpResponseRedirect(reverse("personal"))
                 post.caption = postTemp.caption
-                post.picture = postTemp.picture
+                if postTemp.picture:
+                    post.picture = postTemp.picture
                 post.save()
                 message = "Post Updated Successfully"
                 messages.success(request, message, fail_silently=True)
-                return HttpResponseRedirect(reverse("posts:feed"))
+                return HttpResponseRedirect(reverse("personal"))
             else:
                 beaver = getBeaverInstance(request)
                 post = Post.objects.filter(pk=id, post_creator=beaver).first()
                 if post is None:
                     message = "Cannot be find the specified post"
                     messages.error(request, message, fail_silently=True)
-                    return HttpResponseRedirect(reverse("posts:feed"))
+                    return HttpResponseRedirect(reverse("personal"))
                 post.delete()
                 message = "Post Deleted Successfully"
                 messages.success(request, message, fail_silently=True)
-                return HttpResponseRedirect(reverse("posts:feed"))
+                return HttpResponseRedirect(reverse("personal"))

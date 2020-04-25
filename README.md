@@ -4,38 +4,36 @@
 
 ## A social media website made using Django
 
-### Features
-
-- 1. Login, Register, Forgot Password
-
-- 2. View posts by friends, Add friends, Search for users
-
-- 3. Like, Share and Comment for posts
-
-- 4. Create new posts ( Can add pictures too ). Also view current trending hashtags from twitter
-
-- 5. Remove or block friends
-
-- 6. Chat with friends using Websockets protocol
+A social media site which contains all basic features which Facebook and Instagram have to offer like Posts, Likes, Comments, Friend Request System and a Chat Application using Websockets protocol.
 
 ### Prerequisites
 
-`pip3 install -r requirements-dev.txt`
+```console
+foo@bar:~$ pip3 install -r requirements-dev.txt
+```
 
 ### Installing
 
-`cd Quiver`
+```console
+foo@bar:~$ cd Quiver
+```
 
-`python3 manage.py makemigrations`
+##### Make Django aware of the models
 
-`python3 manage.py migrate`
+```console
+foo@bar:~$ python3 manage.py makemigrations
+foo@bar:~$ python3 manage.py migrate
+```
 
-### To run this 
-`python3 manage.py runserver`
+### To run the app
+
+```console
+foo@bar:~$ python3 manage.py runserver
+```
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUSCT.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 

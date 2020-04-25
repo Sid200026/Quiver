@@ -21,6 +21,7 @@
     position: fixed;
     left: 1%;
     top: 10%;
+    width:300px;
 }
 
 ::-webkit-scrollbar {
@@ -215,6 +216,7 @@
 .requester {
     color: rgb(179, 179, 179);
     margin-left: 10px;
+    width:90px;
 }
 
 .accept {
@@ -307,4 +309,8 @@
 .except {
     text-decoration: none;
     color: white;
+}
+
+.username{
+    color:rgb(0, 255, 234);
 }

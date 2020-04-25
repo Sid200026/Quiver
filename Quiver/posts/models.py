@@ -61,3 +61,29 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{self.liker} {self.post}"
+
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(
+        Beaver, related_name="request_sends", on_delete=models.CASCADE
+    )
+    receiver = models.ForeignKey(
+        Beaver, related_name="request_receives", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"{self.sender} --> {self.receiver}"
+
+    @classmethod
+    def sendRequest(cls, sender, receiver):
+        request = cls.objects.filter(sender=sender, receiver=receiver).first()
+        if request is not None:
+            cls.objects.create(sender=sender, receiver=receiver)
+
+    # The receiver can only accept the request
+
+    def acceptRequest(self, beaver):
+        request = self.filter(sender=beaver).first()
+        if request is not None:
+            Beaver.make_friend(creator=request.sender, friend=request.receiver)
+            request.delete()

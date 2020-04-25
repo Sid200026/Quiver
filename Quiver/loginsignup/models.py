@@ -1,11 +1,11 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from chat.models import ChatInfo
 
 from .managers import BeaverManager
 from .constants import ImageConstant, ResetConstants
-from django.core.validators import RegexValidator
 
 User = get_user_model()
 
@@ -41,7 +41,12 @@ class Beaver(models.Model):
     @classmethod
     def make_friend(cls, creator, friend):
         creator.friends.add(friend)
-        ChatInfo.createChatInformation(creator, friend)
+        beaver = Beaver.objects.filter(user=creator).first()
+        chatinfo = ChatInfo.objects.filter(
+            member1=beaver, member2=friend
+        ) | ChatInfo.objects.filter(member2=beaver, member1=friend)
+        if chatinfo is None:
+            ChatInfo.createChatInformation(creator, friend)
 
     @classmethod
     def remove_friend(cls, creator, friend):
