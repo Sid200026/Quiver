@@ -4,7 +4,8 @@
 <link rel="stylesheet" href={% static 'loginsignup/css/update.css'%} </head>
 {% endblock %}
 {% block main %}
-<form>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
 <div class="left">
     <div class="small">
         <label for="username">Username</label>
@@ -33,12 +34,12 @@
             {% if "F" == beaver.gender %}
                 <option value="F" selected="selected">Female</option>
             {% else %}
-                <option value="F">Male</option>
+                <option value="F">Female</option>
             {% endif %}
             {% if "N" == beaver.gender %}
                 <option value="N" selected="selected">Cannot Specify Option</option>
             {% else %}
-                <option value="N">Male</option>
+                <option value="N">Cannot Specify Option</option>
             {% endif %}
         </select>
     </div>
@@ -46,27 +47,28 @@
 <div class="right">
     <div class="small">
         <label for="email">Email</label>
-        <input type="text" value={{user.email}} name="email" required placeholder="Example : john@doe.com">
+        <input type="email" value={{user.email}} name="email" required placeholder="Example : john@doe.com">
     </div>
     <div class="small">
         <label for="firstname">Phone Number</label>
-        <input type="text" value={{beaver.phone}} name="phone" required placeholder="Example : 1234-123-433">
-    </div>
-    <div class="small">
-        <label for="username">Last Name</label>
-        <input type="text" value={{user.last_name}} name="last_name" required placeholder="Example : Doe">
+        <input type="number" value={{beaver.phone}} name="phone" required placeholder="Example : 1234-123-433">
     </div>
     <div class="small">
         <label for="bio">Bio</label>
         <textarea name="bio" placeholder="A sentence or two to describe you">{{beaver.bio}}</textarea>
     </div>
+    <button type="button" onclick="updatePassword()" class="update updatepwd">Update Password</button>
+
 </div>
 <div class="middle">
     <div class="box">
         <h1 class="heading">Update Profile</h1>
+        {% if form.errors %}
+            <h5 class="errorfield">{{form.errors}}</h5>
+        {% endif%}
         <img src={{beaver.profile_photo.url}} alt="Profile Picture" class="profile_photo" id="profileunique"><br />
-        <input name="picture" onchange='openFile(event)' type="file" id="file" />
-        <label for="file" class="btn-2"><span>Upload a photo</span></label><br />
+        <input name="profile_photo" onchange='openFile(event)' type="file" id="file"/>
+        <label for="file" class="btn-2" name="profile_photo"><span>Upload a photo</span></label><br />
         <input type="submit" value="Update" class="update">
     </div>
 </div>
@@ -76,10 +78,22 @@
     <script src={% static 'loginsignup/JS/complete.js' %}></script>
     <script>
         const ele = document.getElementById("special")
-        const date = new Date({{beaver.date_of_birth|date:"y-m-d"}});;
-        console.log{{beaver.date_of_birth|date:"Y M D"}}
-        console.log(date.toISOString())
-        ele.value = date.toISOString().split('T')[0];
+        const date = new Date({{beaver.date_of_birth|date:"Y"}}, {{beaver.date_of_birth|date:"m"}}, {{beaver.date_of_birth|date:"j"}})
+        const year = date.getFullYear();
+        let month = date.getMonth();
+        let day = date.getDate();
+        if(month<10) {
+            month = `0${month}`
+        }
+        if(day<10) {
+            day = `0${day}`
+        }
+        const dateval = `${year}-${month}-${day}`;
+        ele.value = dateval;
+
+        const updatePassword = () => {
+            window.location.href = `http://${window.location.host}/update/reset/`;
+        }
     </script>
 
 {% endblock %}

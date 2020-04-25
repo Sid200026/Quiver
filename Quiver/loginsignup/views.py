@@ -16,7 +16,7 @@ from random import randint
 import logging as log
 
 from .models import Beaver, ResetPasswordModel
-from .forms import BeaverForm
+from .forms import BeaverForm, UpdateForm, PasswordForm
 from .constants import AuthConstants
 from .auth_forms import UserLoginForm, UserSignUpForm
 from .utils import getBeaverInstance
@@ -305,7 +305,9 @@ class BeaverListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         search = self.request.GET.get("search") or ""
-        friends = Beaver.objects.filter(user__username__icontains=search)
+        friends = Beaver.objects.filter(user__username__icontains=search).exclude(
+            user=self.request.user
+        )
         friend_list = []
         for friend in friends:
             friend_list.append(
@@ -360,3 +362,33 @@ class UpdateProfileView(LoginRequiredMixin, View):
             "beaver": beaver,
         }
         return render(request, self.template_name, kwargs)
+
+    def post(self, request):
+        updateForm = UpdateForm(request.POST, request.FILES)
+        if updateForm.update(request):
+            message = "Profile updated successfully"
+            messages.success(request, message, fail_silently=True)
+            return HttpResponseRedirect(reverse("personal"))
+        user = request.user
+        beaver = getBeaverInstance(request)
+        kwargs = {"form": updateForm, "user": user, "beaver": beaver}
+        return render(request, self.template_name, kwargs)
+
+
+class UpdatePasswordView(LoginRequiredMixin, View):
+    template_name = "loginsignup/update_password.html"
+    redirect_field_name = "next"
+    form_class = PasswordForm
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        passwordForm = self.form_class(request.POST)
+        if passwordForm.updatePassword(request):
+            message = "Password updated successfully"
+            messages.success(request, message, fail_silently=True)
+            return HttpResponseRedirect(reverse("personal"))
+        else:
+            kwargs = {"form": passwordForm}
+            return render(request, self.template_name, kwargs)

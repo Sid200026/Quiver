@@ -9,6 +9,7 @@ class AuthConstants(enum.Enum):
     codeMail = "A 6 digit verification code has been sent to your mail id"
     askUsername = "Please enter your username again for security purposes"
     loginAgain = "Please login to your account again for security purposes"
+    sameUsername = "User with that username already exists"
 
 
 class ImageConstant(enum.Enum):
