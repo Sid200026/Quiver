@@ -41,8 +41,12 @@
                         {% endautoescape %}
                     {% endif %}
                     <div class="btns">
-                        <button type="button" class="likes btn">{{post.post_likes.all.count}} Likes</button>
-                        <button type="button" class="comments btn">{{post.comments.all.count}} comments</button>
+                        {% if post in post_liked %}
+                            <button type="button" class="likes btn liked" id={{"L"}}{{post.id}}>{{post.post_likes.all.count}} Likes</button>
+                        {% else %}
+                            <button type="button" class="likes btn" id={{"L"}}{{post.id}}>{{post.post_likes.all.count}} Likes</button>
+                        {% endif %}
+                        <button type="button" class="comments btn" id={{post.id}} onclick="handleComment(event)">{{post.comments.all.count}} comments</button>
                     </div>
                 </div>
             {% endfor %}
@@ -97,5 +101,30 @@
         const handlePost = (event) => {
             window.location.href = `http://${window.location.host}/post/modify/${event.target.id}/`;
         }
+
+        const handleComment = (event) => {
+            window.location.href = `http://${window.location.host}/post/comment/${event.target.id}/`;
+        }
+
+        $(document).ready(function() {
+            $(".likes").on('click', function() {
+                const id = this.id.slice(1,)
+                $.ajax({
+                    url: '/post/ajax/like/',
+                    data: {
+                    'id': id
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $(`#L${data.id}`).html(`${data.count} Likes`)
+                        if(data.status) {
+                            $(`#L${data.id}`).addClass("liked")
+                        } else {
+                            $(`#L${data.id}`).removeClass("liked")
+                        }
+                    }
+                });
+            });
+        })
     </script>
     {% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'loginsignup/navbar.html' %} 
+{% load static %} 
+{% load loginsignup_extras %} 
+{% block css %}
+<link rel="stylesheet" href={% static 'posts/css/comment.css'%}> 
+{% endblock %}
+{% block main %}
+<div class="middle">
+    <div class="mid-content">
+        <h1 class="heading">Comment Section</h1>
+            {% if messages %} {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h5 class="success">{{message}}</h5>
+            {% else %}
+            <h5 class="errorfield">{{message}}</h5>
+            {% endif %} {% endfor %}{% endif %}
+        <div class="post">
+            <div class="creator">
+                <img src={{post.post_creator.profile_photo.url}} alt={{post.post_creator.user.username}} class="poster_photo">
+                <p>{{post.post_creator.user.username}}</p>
+                <p class="datepost">{{post.posted_on|date:"SHORT_DATE_FORMAT"}}</p>
+            </div>
+            {% if post.picture %}
+                <img src={{post.picture.url}} alt="Post Picture" class="post_photo">
+            {% endif %}
+            {% if post.picture %}
+                {% autoescape on %}
+                    <p class="caption">{{post.caption|linebreaksbr}}</p>
+                {% endautoescape %}
+            {% else %}
+                {% autoescape on %}
+                    <p class="caption nophoto">{{post.caption|linebreaksbr}}</p>
+                {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="comments">
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="comment" class="comment-input" placeholder="Add a comment" required></textarea>
+                <input type="submit" value="Post Comment" class="postcomment">
+            </form>
+            {% for comment in post.comments.all %}
+                <div class="comment">
+                    <div class="creator">
+                        <img class="poster_photo" src={{comment.comment_creator.profile_photo.url}} alt={{comment.comment_creator.username}}>
+                        <p>@{{comment.comment_creator.user.username}}</p>
+                        <p class="datepost">{{comment.posted_on|date:"SHORT_DATE_FORMAT"}}
+                    </div>
+                    <div class="text">
+                        {% autoescape on %}
+                            <p>{{comment.comment}}</p>
+                        {% endautoescape %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<div>
+{% endblock %}

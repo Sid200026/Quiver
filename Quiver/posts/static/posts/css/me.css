@@ -314,3 +314,8 @@
 .username{
     color:rgb(0, 255, 234);
 }
+
+.liked{
+    background: rgb(41, 255, 244);
+    color:black;
+}

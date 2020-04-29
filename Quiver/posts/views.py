@@ -5,10 +5,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.db.models import Q
 import logging as log
 
-from .forms import PostForm
-from .models import Post
+from .forms import PostForm, CommentForm
+from .models import Post, Like
 from .twitter_parse import getTrending
 from loginsignup.utils import getBeaverInstance
 
@@ -53,7 +54,9 @@ class PersonalProfileView(LoginRequiredMixin, View):
     def get(self, request):
         beaver = getBeaverInstance(request)
         posts = beaver.posts.all().order_by("-posted_on")
-        kwargs = {"profile": beaver, "posts": posts}
+        liked = beaver.total_likes.values_list("post__id", flat=True)
+        post_liked = Post.objects.filter(pk__in=liked)
+        kwargs = {"profile": beaver, "posts": posts, "post_liked": post_liked}
         return render(request, self.template_name, kwargs)
 
 
@@ -63,9 +66,13 @@ class FeedView(LoginRequiredMixin, View):
 
     def get(self, request):
         beaver = getBeaverInstance(request)
-        kwargs = {
-            "profile": beaver,
-        }
+        posts = beaver.posts.all().order_by("-posted_on")
+        friends = beaver.friends.all()
+        friends_posts = Post.objects.filter(post_creator__in=friends)
+        posts = posts | friends_posts
+        liked = beaver.total_likes.values_list("post__id", flat=True)
+        post_liked = Post.objects.filter(pk__in=liked)
+        kwargs = {"profile": beaver, "posts": posts, "post_liked": post_liked}
         return render(request, self.template_name, kwargs)
 
 
@@ -108,10 +115,87 @@ class UpdatePostView(LoginRequiredMixin, View):
                 beaver = getBeaverInstance(request)
                 post = Post.objects.filter(pk=id, post_creator=beaver).first()
                 if post is None:
-                    message = "Cannot be find the specified post"
+                    message = "Cannot find the specified post"
                     messages.error(request, message, fail_silently=True)
                     return HttpResponseRedirect(reverse("personal"))
                 post.delete()
                 message = "Post Deleted Successfully"
                 messages.success(request, message, fail_silently=True)
                 return HttpResponseRedirect(reverse("personal"))
+
+
+class CommentView(LoginRequiredMixin, View):
+    template_name = "posts/comment.html"
+    redirect_field_name = "next"
+    form_class = CommentForm
+
+    def get(self, request, id):
+        beaver = getBeaverInstance(request)
+        # Can only comment on friend or their own posts
+        post = Post.objects.filter(
+            Q(pk=id, post_creator__in=beaver.friends.all())
+            | Q(pk=id, post_creator=beaver)
+        ).first()
+        if post is None:
+            message = "Cannot find the specified post"
+            messages.error(request, message, fail_silently=True)
+            return HttpResponseRedirect(reverse("personal"))
+        kwargs = {
+            "post": post,
+        }
+        return render(request, self.template_name, kwargs)
+
+    def post(self, request, id):
+        beaver = getBeaverInstance(request)
+        # Can only comment on friend or their own posts
+        post = Post.objects.filter(
+            Q(pk=id, post_creator__in=beaver.friends.all())
+            | Q(pk=id, post_creator=beaver)
+        ).first()
+        if post is None:
+            message = "Cannot find the specified post"
+            messages.error(request, message, fail_silently=True)
+            return HttpResponseRedirect(reverse("personal"))
+        commentForm = CommentForm(request.POST)
+        if commentForm.checkComment(request, post):
+            message = "Comment created successfully"
+            messages.success(request, message, fail_silently=True)
+            return HttpResponseRedirect(
+                reverse("posts:comment", kwargs={"id": post.pk})
+            )
+        message = "Comment cannot be created"
+        messages.error(request, message, fail_silently=True)
+        return HttpResponseRedirect(reverse("posts:comment", kwargs={"id": post.pk}))
+
+
+def like(request):
+    if request.is_ajax():
+        if not request.user:
+            return JsonResponse(None)
+        id = request.GET.get("id")
+        beaver = getBeaverInstance(request)
+        post = Post.objects.filter(
+            Q(pk=id, post_creator__in=beaver.friends.all())
+            | Q(pk=id, post_creator=beaver)
+        ).first()
+        if post is None:
+            return JsonResponse(None)
+        like = Like.objects.filter(post=post, liker=beaver).first()
+        if like is None:
+            like = Like(post=post, liker=beaver)
+            like.save()
+            data = {
+                "status": True,
+                "id": post.pk,
+                "count": post.post_likes.all().count(),
+            }
+            log.error(data)
+            return JsonResponse(data)
+        else:
+            like.delete()
+            data = {
+                "status": False,
+                "id": post.pk,
+                "count": post.post_likes.all().count(),
+            }
+            return JsonResponse(data)

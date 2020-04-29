@@ -1,0 +1,173 @@
+* {
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.middle {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+}
+
+.mid-content {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post {
+    margin-top: 15px;
+    position: relative;
+    background: rgb(7, 5, 7);
+    padding: 20px 0px 5px 0px;
+    border-radius: 25px;
+    width: 700px;
+}
+
+.post_photo {
+    width: 100%;
+    height: 350px;
+    padding-top: 70px;
+    border-radius: 25px;
+}
+
+.creator {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.poster_photo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid yellow;
+}
+
+.datepost {
+    margin-left: 10px;
+}
+
+.caption {
+    color: rgb(214, 214, 214);
+    margin-top: 25px;
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+.nophoto {
+    margin-top: 55px;
+}
+
+.heading {
+    color: white;
+    margin: 20px;
+    font-weight: 400;
+}
+
+.comments {
+    width: 700px;
+    background: rgb(78, 76, 78);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 25px;
+    margin-bottom: 50px;
+    position: relative;
+    min-height: 250px;
+}
+
+.comment-input {
+    width: 650px;
+    height: 120px;
+    border-radius: 25px;
+    margin-top: 10px;
+    background: none;
+    padding: 15px;
+    color: black;
+    font-size: 17px;
+    margin: 15px;
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    margin-bottom: 100px;
+}
+
+.comment-input:focus {
+    outline: none;
+}
+
+.postcomment {
+    position: absolute;
+    right: 0px;
+    top: 150px;
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 15px;
+    background: none;
+    border: 1px solid yellowgreen;
+    color: white;
+}
+
+.postcomment:hover {
+    background: yellowgreen;
+    border: 2px solid black;
+    color: black;
+    cursor: pointer;
+}
+
+.comments ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: black;
+    opacity: 1;
+    /* Firefox */
+}
+
+.comments :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: black;
+}
+
+.comments ::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: black;
+}
+
+.comment {
+    position: relative;
+    width: 100%;
+    border-top: 2px solid black;
+    /* border-bottom: 1px solid black; */
+    border-radius: 25px;
+    margin:5px;
+}
+
+.text{
+    margin-top:70px;
+    width: 100%;
+    color: rgb(214, 214, 214);
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+.success {
+    color: yellowgreen;
+    font-size: 22px;
+    font-weight: 200;
+}
+
+.errorfield {
+    color: red;
+    font-size: 22px;
+    font-weight: 200;
+}
