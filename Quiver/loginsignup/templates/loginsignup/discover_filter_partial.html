@@ -1,10 +1,9 @@
 {% load static %} {% load loginsignup_extras %}
 <div class="container">
     {% for friend in page_obj %}
-    <div class="card">
+    <div class="card" onclick="handleLinkProfile('{{friend.name}}')">
         <img src={{ friend.profile_photo.url }} alt={{friend.name}} class="friend-image">
         <p class="username">{{friend.name}}</p>
-        <button type="button" class="unfriend addfriend">Add Friend</button>
         <p class="bio">{{friend.bio|someWords}}</p>
     </div>
     {% endfor %}

@@ -41,7 +41,7 @@ class Beaver(models.Model):
     @classmethod
     def make_friend(cls, creator, friend):
         creator.friends.add(friend)
-        beaver = Beaver.objects.filter(user=creator).first()
+        beaver = Beaver.objects.filter(user=creator.user).first()
         chatinfo = ChatInfo.objects.filter(
             member1=beaver, member2=friend
         ) | ChatInfo.objects.filter(member2=beaver, member1=friend)

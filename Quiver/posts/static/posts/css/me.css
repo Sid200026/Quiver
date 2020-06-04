@@ -21,7 +21,7 @@
     position: fixed;
     left: 1%;
     top: 10%;
-    width:300px;
+    width: 300px;
 }
 
 ::-webkit-scrollbar {
@@ -216,7 +216,7 @@
 .requester {
     color: rgb(179, 179, 179);
     margin-left: 10px;
-    width:90px;
+    width: 90px;
 }
 
 .accept {
@@ -224,14 +224,46 @@
     border: 2px solid rgb(115, 255, 0);
     color: white;
     padding: 5px 15px;
-    margin-left: 20px;
+    margin-left: 15px;
     border-radius: 25px;
+}
+
+.reject {
+    background: none;
+    border: 2px solid red;
+    color: white;
+    padding: 5px 15px;
+    margin-left: 15px;
+    border-radius: 25px;
+}
+
+.reject:hover {
+    background: red;
+}
+
+.accepted {
+    background: yellowgreen;
+    cursor: pointer;
+    color: black;
+    border: 2px solid rgb(115, 255, 0);
+    padding: 5px 15px;
+    margin-left: 15px;
+    border-radius: 25px;
+}
+
+.accept:hover {
+    cursor: pointer;
 }
 
 .accept:hover {
     background: yellowgreen;
     cursor: pointer;
     color: black;
+}
+
+.sent {
+    background: yellowgreen;
+    color:black;
 }
 
 .accept:focus {
@@ -266,7 +298,22 @@
 }
 
 .send {
+    background: none;
+    color: white;
+    padding: 5px 15px;
+    margin-left: 15px;
+    border-radius: 25px;
     border: 2px solid red;
+}
+
+.alreadysent {
+    background: none;
+    color: white;
+    padding: 5px 15px;
+    margin-left: 15px;
+    border-radius: 25px;
+    border: 2px solid red;
+    background: red;
 }
 
 .send:hover {
@@ -311,11 +358,11 @@
     color: white;
 }
 
-.username{
-    color:rgb(0, 255, 234);
+.username {
+    color: rgb(0, 255, 234);
 }
 
-.liked{
+.liked {
     background: rgb(41, 255, 244);
-    color:black;
+    color: black;
 }

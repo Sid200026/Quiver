@@ -61,7 +61,7 @@
 {% block scriptag %}
 <script>
     const element = document.getElementsByClassName("messages")[0];
-    element.scrollTop = element.scrollHeight;
+    element.scrollTo(0, element.scrollHeight);
     const roomName = "{{ room_name|escapejs }}";
 
     const chatSocket = new WebSocket(

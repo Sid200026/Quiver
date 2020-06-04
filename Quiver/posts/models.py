@@ -77,13 +77,11 @@ class FriendRequest(models.Model):
     @classmethod
     def sendRequest(cls, sender, receiver):
         request = cls.objects.filter(sender=sender, receiver=receiver).first()
-        if request is not None:
+        if request is None:
             cls.objects.create(sender=sender, receiver=receiver)
 
     # The receiver can only accept the request
 
-    def acceptRequest(self, beaver):
-        request = self.filter(sender=beaver).first()
-        if request is not None:
-            Beaver.make_friend(creator=request.sender, friend=request.receiver)
-            request.delete()
+    def acceptRequest(self):
+        Beaver.make_friend(creator=self.sender, friend=self.receiver)
+        self.delete()

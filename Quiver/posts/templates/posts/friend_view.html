@@ -1,10 +1,14 @@
 {% extends 'loginsignup/navbar.html' %} {% load static %} {% load loginsignup_extras %} {% block css %}
 <link rel="stylesheet" href={% static 'posts/css/me.css'%}>
 <style>
+.creator:hover {
+    cursor: pointer;
+}
 .ptr:hover {
     cursor: pointer;
 }
-</style> 
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 {% endblock %} {% block main %}
 <div class="container">
     <div class="left">
@@ -13,10 +17,19 @@
             <p class="username">@{{profile.user.username}}</p>
             <p class="name">{{profile.user.first_name}} {{profile.user.last_name}}</p>
             <a class="except" href="/friends/">
-                <p class="friends"><span class="info">Friends</span> : {{profile.friends.all.count}}<button type="button" class="viewall">View All</button></p>
+                <p class="friends"><span class="info">Friends</span> : {{profile.friends.all.count}}</p>
             </a>
             <p class="posts"><span class="info">Posts</span> : {{posts.all.count}}</p>
-            <button type="button" class="update" onclick="handleClick()">Update Details</button>
+            {% if status == 1 %}
+                <button type="button" class="update send_req">Send Request</button>
+            {% elif status == 2 %}
+                <button type="button" class="update sent">Request Sent</button>
+            {% elif status == 3 %}
+                <button type="button" class="update accept">Accept</button>
+                <button type="button" class="update reject">Reject</button>
+            {% elif status == 4 %}
+                <button type="button" class="update unfriend">Unfriend</button>
+            {% endif %}
         </div>
     </div>
     <div class="middle">
@@ -26,6 +39,18 @@
             {% else %}
             <h5 class="errorfield">{{message}}</h5>
             {% endif %} {% endfor %} {% endif %}
+            {% if not friend %}
+                <h2 style="color: white; margin: 2rem;">You can view <span style="color: green;">{{profile.user.username}}</span>'s profile once both of you are friends.</h2>
+                <h2 style="color: white; margin: 1rem; text-decoration: underline;">Profile Bio</h2>
+                {% if profile.bio %}
+                    <h5 class="success" style="text-algin: center;">{{profile.bio}}</h5>
+                {% else %}
+                    <h5 class="success" style="text-algin: center;">Not available</h5>
+                {% endif %}
+            {% else %}
+            {% if not posts %}
+                <h2 style="color: white; margin: 2rem;"><span style="color: green;">{{profile.user.username}}</span> hasn't posted anything.</h2>
+            {% endif %}
             {% for post in posts %}
                 <div class="post">
                     <div class="creator">
@@ -33,7 +58,6 @@
                         <p>{{post.post_creator.user.username}}</p>
                         <p class="datepost">{{post.posted_on|date:"SHORT_DATE_FORMAT"}}</p>
                     </div>
-                    <p class="option" id={{post.id}} onclick="handlePost(event)">&hellip;</p>
                     {% if post.picture %}
                         <img src={{post.picture.url}} alt="Post Picture" class="post_photo">
                     {% endif %}
@@ -56,6 +80,7 @@
                     </div>
                 </div>
             {% endfor %}
+            {% endif %}
         </div>
         <div class="right">
             <div class="requests">
@@ -87,60 +112,25 @@
     </div>
     {% endblock %} {% block scriptag %}
     <script>
-        const handleClick = () => {
-            window.location.href = `http://${window.location.host}/update/`;
-        }
 
-        const handlePost = (event) => {
-            window.location.href = `http://${window.location.host}/post/modify/${event.target.id}/`;
-        }
-
-        const handleComment = (event) => {
-            window.location.href = `http://${window.location.host}/post/comment/${event.target.id}/`;
+        const handleLinkProfile = (username) => {
+            window.location.href = `http://${window.location.host}/post/friend/${username}/`;
         }
 
         const refreshPage = () => {
             window.location.reload();
         }
 
-        const handleLinkProfile = (username) => {
-            window.location.href = `http://${window.location.host}/post/friend/${username}/`;
+        const handleComment = (event) => {
+            window.location.href = `http://${window.location.host}/post/comment/${event.target.id}/`;
         }
 
+        const delay_by_in_ms = 100
+        let scheduled_function = false
+
+        const username = "{{profile.user.username}}";
+
         $(document).ready(function() {
-            $(".more").on('click', refreshPage)
-            $(".accept").on("click", function() {
-                const username = this.id;
-                const btn = $(this);
-                $.ajax({
-                    url : '/post/ajax/accept/request/',
-                    data: {
-                        'username_friend': username,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        btn.html('Accepted')
-                        btn.removeClass('accept');
-                        btn.addClass('accepted');
-                    }
-                })
-            })
-            $(".send").on("click", function() {
-                const username = this.id;
-                const btn = $(this);
-                $.ajax({
-                    url : '/post/ajax/send/request/',
-                    data: {
-                        'username_friend': username,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        btn.html('Request Sent')
-                        btn.removeClass('send');
-                        btn.addClass('alreadysent');
-                    }
-                })
-            });
             $(".likes").on('click', function() {
                 const id = this.id.slice(1,)
                 $.ajax({
@@ -159,6 +149,104 @@
                     }
                 });
             });
+            $(".more").on('click', refreshPage)
+            $(".accept").on("click", function() {
+                const btn = $(this);
+                $.ajax({
+                    url : '/post/ajax/accept/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            })
+            $(".unfriend").on("click", function() {
+                $.ajax({
+                    url : '/ajax/unfriend/',
+                    data: {
+                        'username': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            })
+            $(".send_req").on("click", function() {
+                const btn = $(this);
+                $.ajax({
+                    url : '/post/ajax/send/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            })
+            $(".sent").on("click", function() {
+                $.ajax({
+                    url : '/post/ajax/delete/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            });
+            $(".accept").on("click", function() {
+                $.ajax({
+                    url : '/post/ajax/accept/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            });
+            $(".reject").on("click", function() {
+                $.ajax({
+                    url : '/post/ajax/reject/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            });
+            let ajax_call = function(endpoint, request_parameters) {
+            $.getJSON(endpoint, request_parameters)
+                .done(() => {
+                    window.location.reload();
+                })
+            }
+
+            $(".send_req").on('click', function() {
+
+                const unfriend_endpoint = "/post/ajax/send/request/"
+
+                const request_parameters = {
+                    username_friend: "{{profile.user.username}}" // value of user_input: the HTML element with ID user-input
+                }
+
+                // if scheduled_function is NOT false, cancel the execution of the function
+                if (scheduled_function) {
+                    clearTimeout(scheduled_function)
+                }
+
+                // setTimeout returns the ID of the function to be executed
+                scheduled_function = setTimeout(ajax_call, delay_by_in_ms, unfriend_endpoint, request_parameters)
+            })
         })
     </script>
     {% endblock %}

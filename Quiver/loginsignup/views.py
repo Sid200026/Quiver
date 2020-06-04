@@ -13,13 +13,13 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from random import randint
-import logging as log
 
 from .models import Beaver, ResetPasswordModel
 from .forms import BeaverForm, UpdateForm, PasswordForm
 from .constants import AuthConstants
 from .auth_forms import UserLoginForm, UserSignUpForm
 from .utils import getBeaverInstance
+from .tasks import sendEmail
 
 User = get_user_model()
 
@@ -117,7 +117,11 @@ class ResetPasswordView(View):
                 securityCode = randint(100000, 999999)  # 6 digit security code
                 resetlink.securityCode = securityCode
             resetlink.save()
-            log.error(resetlink.securityCode)
+            message_to_be_sent = f"Verification Code : {resetlink.securityCode}"
+            # log.error(resetlink.securityCode)
+            sendEmail.delay(
+                user.first().email, "Password Update Request", message_to_be_sent
+            )
             messages.info(request, AuthConstants.codeMail.value, fail_silently=True)
             return render(
                 request,
@@ -305,9 +309,7 @@ class BeaverListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         search = self.request.GET.get("search") or ""
-        friends = Beaver.objects.filter(user__username__icontains=search).exclude(
-            user=self.request.user
-        )
+        friends = Beaver.objects.filter(user__username__icontains=search)
         friend_list = []
         for friend in friends:
             friend_list.append(

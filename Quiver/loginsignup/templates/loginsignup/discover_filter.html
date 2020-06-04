@@ -1,11 +1,10 @@
 {% extends 'loginsignup/discover_list.html' %} {% load static %} {% load loginsignup_extras %} {% block content %}
 <div class="container">
     {% for friend in page_obj %}
-    <div class="card">
+    <div class="card" onclick="handleLinkProfile('{{friend.name}}')">
         <img src={{ friend.profile_photo.url }} alt={{friend.name}} class="friend-image">
         <p class="username">{{friend.name}}</p>
         <p class="bio">{{friend.bio|someWords}}</p>
-        <button type="button" class="unfriend addfriend" value={{friend.name}}>Add Friend</button>
     </div>
     {% endfor %}
 </div>

@@ -11,6 +11,9 @@
 </div>
 {% endblock %} {% block scriptag %}
 <script>
+    const handleLinkProfile = (username) => {
+        window.location.href = `http://${window.location.host}/post/friend/${username}/`;
+    }
     $(document).ready(function() {
         const user_input = $("#input")
         const container = $('.temp')

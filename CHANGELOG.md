@@ -3,15 +3,15 @@
 ## Added
 - Login, Signup, Forgot Password
 - Chat using Websocket
+- Background tasks like sending emails etc
+- Feed Page
+- UI Improvements
+- Friend recommendation system
+- Update Profile Page
 
 ## Proposed
 - Notifications for chat
-- Update Profile Page
-- Friend recommendation system
-- UI Improvements
 - Group Chat
 
 ## In Progress
-- Feed Page
 - Push Notifications
-- Background tasks like sending emails etc
