@@ -91,6 +91,7 @@ class FeedView(LoginRequiredMixin, View):
     def get(self, request):
         beaver = getBeaverInstance(request)
         posts = beaver.posts.all().order_by("?")
+        count = posts.count()
         friends = beaver.friends.all()
         friends_posts = Post.objects.filter(post_creator__in=friends)
         posts = posts | friends_posts
@@ -116,6 +117,7 @@ class FeedView(LoginRequiredMixin, View):
             "post_liked": post_liked,
             "random": random_friends,
             "pending": pending_friend_requests,
+            "count": count,
         }
         return render(request, self.template_name, kwargs)
 

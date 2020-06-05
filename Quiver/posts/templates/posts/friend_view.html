@@ -188,6 +188,19 @@
                     }
                 })
             })
+            $(".send").on("click", function() {
+                const btn = $(this);
+                $.ajax({
+                    url : '/post/ajax/send/request/',
+                    data: {
+                        'username_friend': username,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        refreshPage();
+                    }
+                })
+            })
             $(".sent").on("click", function() {
                 $.ajax({
                     url : '/post/ajax/delete/request/',

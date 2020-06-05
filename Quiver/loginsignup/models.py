@@ -7,6 +7,8 @@ from chat.models import ChatInfo
 from .managers import BeaverManager
 from .constants import ImageConstant, ResetConstants
 
+import logging as log
+
 User = get_user_model()
 
 
@@ -45,7 +47,8 @@ class Beaver(models.Model):
         chatinfo = ChatInfo.objects.filter(
             member1=beaver, member2=friend
         ) | ChatInfo.objects.filter(member2=beaver, member1=friend)
-        if chatinfo is None:
+        log.error(chatinfo)
+        if not chatinfo:
             ChatInfo.createChatInformation(creator, friend)
 
     @classmethod
